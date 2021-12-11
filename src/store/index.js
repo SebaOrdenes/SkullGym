@@ -23,7 +23,9 @@ export default new Vuex.Store({
     },
     horarios:[],
     horariosTomados:[],
+    horariosNoTomados:[],
     historialHorarios:[],
+    historialTomados:[],
     histo2:[],
     alumnos:[],
     medidas:[],
@@ -57,6 +59,9 @@ export default new Vuex.Store({
     blogPostsCards(state) {
       return state.blogPosts.slice(2, 6);
     },
+    Horarios(state) {
+      return state.horarios;
+    },
     horariosNoHistorial(state) {
       return state.horarios.filter(horario => {
         return horario.historial === false;
@@ -65,14 +70,18 @@ export default new Vuex.Store({
     horariosHistorial(state) {
       return state.historialHorarios;
     },
+
     horariosAsistidos(state) {
       return state.horariosTomados;
     },
     HorarioNoTomado(state) {
-      return state.horariosTomados.map(item => {
-        return state.horariosTomados.find(horariosTomados => horariosTomados.id !== item.id);
+      return state.horariosNoTomados;//Tomados.map(item => {
+        //return state.horariosTomados.find(horariosTomados => horariosTomados.id !== item.id);
        
-        })
+       // })
+    },
+     Usuarios(state) {
+      return state.usuarios;
     },
       
  /*   horariosHistorial(state) {
@@ -191,11 +200,19 @@ export default new Vuex.Store({
     },
     Historial(state,payload){
       state.historialHorarios=payload
-      console.log("Horarios: ", state.historialHorarios);
+      
     },
-    HistorialTomados(state,payload){
-      state.historialTomados=payload
-      console.log("Historial tomados: ", state.historialTomados);
+    horariosTomados(state,payload){
+      state.horariosTomados=payload
+    },
+    sacarhorario(state,payload){
+      console.log("payload: ", payload);
+      state.horarios.filter(item => item.id !== payload)
+      console.log("Historial No tomados: ", state.horarios);
+    },
+     horariosNoTomados(state,payload){
+      state.horariosNoTomados=payload
+      console.log("Horarios no tomados: ", state.horariosNoTomados);
     },
     setHorario(state,payload){
       state.horarios = payload;
@@ -212,6 +229,8 @@ export default new Vuex.Store({
       state.clase = state.horarios.find(item => item.id === payload.id)
       state.clase.alumnos.filter(item => item.id !== payload.userid)
       state.clase.espacio = payload.espacio - 1
+      const horarioNoTomado = state.clase
+      state.horariosNoTomados.push(horarioNoTomado)
     }, 
     EstadoBoton(state,payload){
       state.clase.boton = payload
@@ -417,61 +436,76 @@ export default new Vuex.Store({
         }) 
     },
 
-    async getBotonHistorial({commit}){
-      var boton2;
-      db.collection("Horarios").get().then((res) => {
-       res.forEach((doc) => {
-             boton2 = doc.data().Historial;
-             //console.log("boton historial 1:", boton2);
-             commit("EstadoBotonHistorial", boton2);
-         });  
-        }) 
-    },
-
     async editarClase({commit},id){
      commit('editarClase',id)
     },    
     
     async TomarClase({commit},{id,userid,username,userlast,espacio}){
-         //const integrar = {id : userid, name : username, apellido: userlast}
         
          const dataBase = await db.collection("Horarios").doc(id);
-         await dataBase.set({
-          alumnos: firebase.firestore.FieldValue.arrayUnion({id : userid, name : username, apellido: userlast}), 
+         await dataBase.update({
+          alumnos: firebase.firestore.FieldValue.arrayUnion(userid), 
           espacio: firebase.firestore.FieldValue.increment(1),
          })
-         //const clase = {tipo : tipo, fecha : fecha, hora: hora}
-         //const clas = [tipo, fecha, hora]
-         //const dataBase2 = await db.collection("HorariosTomados").doc(userid);
-         //await dataBase2.set(clase);
-         //await dataBase2.set(clas);
         commit("updateClase",  {id,userid,username,userlast,espacio})   
       },
 
-    async DescartarClase({commit},{id,userid,username,userlast,espacio}){
+    async DescartarClase({commit},{id,userid,espacio}){
          const dataBase = await db.collection("Horarios").doc(id);
          await dataBase.update({
-           alumnos: firebase.firestore.FieldValue.arrayRemove({id : userid, name : username, apellido: userlast}),
+           alumnos: firebase.firestore.FieldValue.arrayRemove(userid),
            espacio: firebase.firestore.FieldValue.increment(-1),
            //boton: true,
       });
         commit("sacarClase", {id,userid,espacio})
      },
 
-    async getHorarioTomados({commit},id){  
-     // console.log("id0 :",id);            
+    async getHorariosTomados({commit}){  
+     
       const horariosTomados = []
-      const dataBase = await db.collection("HorariosTomados").doc(id);
-      const dbResults = await dataBase.get()
-      dbResults.forEach(doc => {
-            let horario = doc;
-            console.log("ClasesAsistidas :",doc);
-            //horario.fecha = doc.fecha
-            //horario.tipo = doc.data().tipo
-            //horario.hora = doc.data().hora
-            horariosTomados.push(horario)
-          })
-        commit("HistorialTomados", horariosTomados);
+      const dataBase = await db.collection("Horarios");
+      const query = await dataBase.where("alumnos","array-contains", "IsBZDGeKUWVFTrAG8wSrYsmaeoA2");
+      query.get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, ' => ', doc.data());
+        var hora = doc.data()
+        horariosTomados.push(hora)
+         });
+       });
+        commit("horariosTomados", horariosTomados);
+    },
+
+    async getHorariosNoTomados({commit}){              
+      const horariosTomados = []
+      const dataBase = await db.collection("Horarios");
+      const query = await dataBase.where("alumnos","array-contains", "IsBZDGeKUWVFTrAG8wSrYsmaeoA2");
+      query.get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        var hora = doc.id
+        horariosTomados.push(hora)
+         });
+       });
+      const horarios = []
+      const dataBase2 = await db.collection("Horarios")
+      const dbResults2 = await dataBase2.get();
+      dbResults2.forEach((doc) => {
+            let horario = doc.id
+            horarios.push(horario)
+      })
+      let difference = horarios.filter(x => !horariosTomados.includes(x));
+      var idx = "fStK12m2zPn0nhzJ6Fwg"
+      console.log("Diferencias: ", difference);
+      const horariosSemana3 = []
+      var horario
+      var docRef = db.collection("Horarios").doc(idx);
+      docRef.get().then((doc) => {
+          horario = doc.data()
+          horariosSemana3.push(horario)
+          console.log("3 : ",doc.data());
+      });
+     
+      commit("horariosNoTomados", horariosSemana3);
+    
     },
 
     async deleteHistorial({commit},id){

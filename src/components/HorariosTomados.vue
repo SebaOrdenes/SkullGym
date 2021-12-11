@@ -1,6 +1,6 @@
 <template>
      <div>
-    {{horariosAsistidos}}
+   
     <H3>Horarios Tomados</H3>
     <table class="table">
         <thead>
@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in horariosAsistidos" :key="item.id">
+            <tr v-for="item in horariosAsist" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
@@ -28,20 +28,20 @@
 </template>
 
 <script>
-import { mapActions} from 'vuex'
+import { mapState,mapActions} from 'vuex'
 export default {
-
+  
     async created(){
     // try {
-      await this.$store.dispatch("getHorarioTomados","IsBZDGeKUWVFTrAG8wSrYsmaeoA2");
+      await this.$store.dispatch("getHorariosTomados");
     // } catch (error) {
     //  console.error(error);
     // }
    
     },
     computed:{
-     //...mapState(['clase','clase.boton','profileId']),
-      horariosAsistidos(){
+     ...mapState(['clase','clase.boton','profileId']),
+      horariosAsist(){
       return this.$store.getters.horariosAsistidos;
       },
      profileUser(){
@@ -49,7 +49,7 @@ export default {
          },
     },
     methods:{
-      ...mapActions(['getPrivilegios','TomarClase','DescartarClase','getBoton']),  
+      ...mapActions(['getPrivilegios','TomarClase','DescartarClase','getHorariosTomados']),  
       
   
      

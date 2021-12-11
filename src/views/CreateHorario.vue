@@ -13,14 +13,14 @@
     <hr />
     <TablaHorarios />
     <br />
-    <Historial />
+   
     
   </div>
 </template>
 
 <script>
 import Horario from "../components/Horario.vue";
-import Historial from "../components/Historial.vue";
+//import Historial from "../components/Historial.vue";
 import TablaHorarios from "../components/TablaHorarios.vue";
 import { mapActions } from "vuex";
 const shortid = require("shortid");
@@ -33,7 +33,7 @@ export default {
   name: "CreateHorarios",
   components: {
     Horario,
-    TablaHorarios, Historial
+    TablaHorarios
   },
   data() {
     return {

@@ -1,7 +1,7 @@
 <template>
   <div class="blog-card-wrap">
     <div class="blog-cards container">
-      <TablaHorarios />
+      <HorariosNoTomados />
     </div>
     <div class="blog-cards container">
       <HorariosTomados />
@@ -11,11 +11,11 @@
 
 
 <script>
-import TablaHorarios from "../components/TablaHorarios";
+import HorariosNoTomados from "../components/HorariosNoTomados";
 import HorariosTomados from "../components/HorariosTomados";
 export default {
   name: "horarios",
-  components: { TablaHorarios,HorariosTomados },
+  components: { HorariosTomados, HorariosNoTomados },
   
   
 };

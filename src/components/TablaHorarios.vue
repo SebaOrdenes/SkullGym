@@ -20,13 +20,11 @@
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td v-if="profileAdmin" >
                    <li v-for="element in item.alumnos" :key="element.id">
-                     {{element.name}} {{element.apellido}}
-                   </li>
+                     {{element}}
+                   </li>  
                 </td> 
                 <td>
-                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName ,userlast: profileLast , espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button>
-                  <!--      <button  @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast, espacio: item.espacio })" v-else> no asistir </button>
-                       </tr>--> 
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName ,userlast: profileLast , espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button> 
                 </td>
                 <td v-if="profileAdmin">
                         <button @click="deleteHorario(item.id)"> Eliminar </button>
@@ -47,13 +45,6 @@
                      <button @click="AddToHistorial(item)">A Historial</button>
                 </td>
             </tr>
-          <!--   <tr>
-                <td  v-for="item in horarios" :key="item.id">
-                        <button @click="AddToHistorial(item)" >Hola</button>
-                       <button @click="deleteHorarioHistorial(item)" v-else>{{BotonHistorial}}</button>
-                        v-if="!item.botonHistorial" v-else
-                 </td>
-             </tr>-->
         </tbody>
     </table>
    </div>
@@ -69,12 +60,20 @@ export default {
      } catch (error) {
       console.error(error);
      }
+      try {
+      await this.$store.dispatch("getUser");
+     } catch (error) {
+      console.error(error);
+     }
      //this.getBoton()
     },
     computed:{
      //...mapState(['clase','clase.boton','profileId']),
       Horarios(){
-      return this.$store.getters.horariosNoHistorial;
+      return this.$store.getters.Horarios;
+      },
+      Users(){
+      return this.$store.getters.Usuarios;
       },
       HorarioNoTomado(){
       return this.$store.getters.HorarioNoTomado;
