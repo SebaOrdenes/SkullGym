@@ -1,6 +1,6 @@
 <template>
 <body>
-    <h1>   <img src='../assets/logo.png'></h1>
+   <!--  <h1>   <img src='../assets/logo.png'></h1> -->
 <!-- You can add more ".slideshow-image" elements, but remember to update the "$items" variable on SCSS -->
 <div class="slideshow">
    

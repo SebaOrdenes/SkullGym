@@ -13,7 +13,7 @@
     <header>
         <input type ="checkbox" name ="" id ="chk1">
         
-           <div class="logo">    <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link> Skull Fitness Gym   <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link> </div>
+           <div class="logo">    <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link>Skull Fitness Gym<router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link> </div>
           
             <ul>
       <div class="nav-links">
@@ -64,12 +64,6 @@
       </ul>
     </transition>
                 
-                <li>
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-instagram"></i></a>
-                      
-                </li>
             </ul>
             <div class="menu">
                 <label for="chk1">
