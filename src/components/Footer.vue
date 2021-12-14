@@ -3,16 +3,17 @@
     <div class="container">
       <div class="left">
         <div class="col-1">
-          <router-link class="header" :to="{ name: 'Home' }">FireBlogs</router-link>
+          <router-link class="header" :to="{ name: 'Home' }">Skull Gym</router-link>
           <ul>
             <li>
-              <a href="#"><instagram class="svg-icon"/></a>
+               <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link>
+       
             </li>
           </ul>
         </div>
         <div class="col-2">
           <ul>
-            <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+            <router-link class="link" :to="{ name: 'Home' }">Inicio</router-link>
             <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
             <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
             <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
@@ -28,11 +29,11 @@
 </template>
 
 <script>
-import instagram from "../assets/Icons/instagram-brands.svg";
+
 export default {
   name: "footer-vue",
   components: {
-    instagram,
+  
   },
   computed: {
     user() {
@@ -47,10 +48,15 @@ export default {
 
 <style lang="scss" scoped>
 footer {
+  
   margin-top: auto;
   padding: 100px 25px;
   background-color: #303030;
   .container {
+    .link{
+      font-family: 'Courier New', Courier, monospace;
+    }
+    
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -77,6 +83,7 @@ footer {
       }
 
       .header {
+        font-family: 'Courier New', Courier, monospace;
         text-align: center;
         font-size: 24px;
         color: #fff;
@@ -88,6 +95,7 @@ footer {
         }
       }
       ul {
+      
         gap: 16px;
         list-style: none;
         display: flex;
@@ -95,10 +103,12 @@ footer {
 
       .col-1,
       .col-2 {
+        font-family: 'Courier New', Courier, monospace;
         gap: 32px;
         display: flex;
         flex: 1;
         @media (min-width: 800px) {
+          
           gap: 0;
         }
       }
@@ -107,6 +117,7 @@ footer {
         flex-direction: column;
 
         h2 {
+
           text-align: center;
           @media (min-width: 800px) {
             text-align: initial;
@@ -114,8 +125,10 @@ footer {
         }
         ul {
           margin-top: auto;
+      
 
           li {
+            
             display: flex;
             align-items: center;
             .svg-icon {

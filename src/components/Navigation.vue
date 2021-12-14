@@ -13,7 +13,7 @@
     <header>
         <input type ="checkbox" name ="" id ="chk1">
         
-           <div class="logo">  <img src='../assets/skull_icon.png'> Skull Fitness Gym <img src='../assets/skull_icon.png'> </div>
+           <div class="logo">    <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link> Skull Fitness Gym   <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link> </div>
           
             <ul>
       <div class="nav-links">
