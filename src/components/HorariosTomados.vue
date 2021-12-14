@@ -1,6 +1,6 @@
 <template>
      <div>
-   
+     
     <H3>Horarios Tomados</H3>
     <table class="table">
         <thead>
@@ -19,7 +19,7 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="DescartarClase({id: item.id, userid: profileUser, username: profileName, userlast:profileLast , espacio: item.espacio})"> No asistir </button>
+                        <button @click="DescartarClase({id: item.HorarioID, userid: profileUser, username: NombreCompleto, espacio: item.espacio})"> No asistir </button>
                 </td>
             </tr>
         </tbody>
@@ -33,7 +33,7 @@ export default {
   
     async created(){
     // try {
-      await this.$store.dispatch("getHorariosTomados");
+      await this.$store.dispatch("getHorariosTomados",this.profileUser);
     // } catch (error) {
     //  console.error(error);
     // }
@@ -47,6 +47,9 @@ export default {
      profileUser(){
       return this.$store.state.profileId;  
          },
+      NombreCompleto(){
+      return this.$store.state.nombreCompleto;
+     }
     },
     methods:{
       ...mapActions(['getPrivilegios','TomarClase','DescartarClase','getHorariosTomados']),  

@@ -57,6 +57,7 @@ export default {
       username: "",
       email: "",
       password: "",
+      nombreCompleto:"",
       error: null,
       errorMsg: "",
     };
@@ -80,6 +81,7 @@ export default {
           firstName: this.firstName,
           lastName: this.lastName,
           username: this.username,
+          nombreCompleto: this.lastName && this.username,
           email: this.email,
           privilegios : false
         });

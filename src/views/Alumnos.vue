@@ -1,6 +1,7 @@
 <template>
   <div class="blog-card-wrap">
     <H1>Alumnos</H1>
+    {{usuarios}}
     <div class="blog-cards container">
      <table class="table">
         <thead>

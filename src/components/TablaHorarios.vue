@@ -1,6 +1,8 @@
 <template>
      <div>
      <H3>Horarios Semana</H3>
+     {{Horarios}}
+     {{NombreCompleto}}
     <table class="table">
         <thead>
             <tr>
@@ -19,12 +21,12 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td v-if="profileAdmin" >
-                   <li v-for="element in item.alumnos" :key="element.id">
+                   <li v-for="element in item.alumnosNombre" :key="element.id">
                      {{element}}
                    </li>  
                 </td> 
                 <td>
-                        <button @click="TomarClase({id: item.id, userid: profileUser, username: profileName ,userlast: profileLast , espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button> 
+                        <button @click="TomarClase({id: item.id, userid: profileUser, username: NombreCompleto, espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button> 
                 </td>
                 <td v-if="profileAdmin">
                         <button @click="deleteHorario(item.id)"> Eliminar </button>
@@ -47,11 +49,27 @@
             </tr>
         </tbody>
     </table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Usuarios</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in usuarios" :key="item.id">
+                <th scope="row">{{item.id}}</th>
+                <th scope="row">{{item.firstName}}</th>
+                <th scope="row">{{item.lastName}}</th>
+            </tr>
+        </tbody>
+    </table>
    </div>
 </template>
 
 <script>
-import { mapActions} from 'vuex'
+import { mapState,mapActions} from 'vuex'
 export default {
 
     async created(){
@@ -60,15 +78,10 @@ export default {
      } catch (error) {
       console.error(error);
      }
-      try {
-      await this.$store.dispatch("getUser");
-     } catch (error) {
-      console.error(error);
-     }
-     //this.getBoton()
+     this.getUser()
     },
     computed:{
-     //...mapState(['clase','clase.boton','profileId']),
+      ...mapState(['usuarios']), 
       Horarios(){
       return this.$store.getters.Horarios;
       },
@@ -89,10 +102,13 @@ export default {
         },
      profileLast(){
       return this.$store.state.profileLastName;
-        }
+        },  
+     NombreCompleto(){
+      return this.$store.state.nombreCompleto;
+     }
     },
     methods:{
-      ...mapActions(['deleteHorario','getPrivilegios','TomarClase','DescartarClase','getBoton']),  
+      ...mapActions(['deleteHorario','getPrivilegios','TomarClase','DescartarClase','getUser']),  
       
       AddToHistorial(item) {
       this.$store.dispatch("putHistorial", item);

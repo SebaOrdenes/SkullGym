@@ -18,6 +18,8 @@ export default new Vuex.Store({
       cupos: 0,
       espacio: 0,
       alumnos:[],
+      alumnosNombre:[],
+      alumnosid:[],
       historial:null,
       boton: null
     },
@@ -44,6 +46,7 @@ export default new Vuex.Store({
     blogPhotoPreview: null,
     editPost: null,
     user: null,
+    nombreCompleto: null,
     profileAdmin: null,
     profileEmail: null,
     profileFirstName: null,
@@ -142,7 +145,8 @@ export default new Vuex.Store({
       state.profileFirstName = doc.data().firstName;
       state.profileLastName = doc.data().lastName;
       state.profileUsername = doc.data().username;
-     // console.log("id user: ",state.profileId); // id de el usuario
+      state.nombreCompleto = doc.data().nombreCompleto;
+      console.log("id user: ",state.nombreCompleto); // id de el usuario
     },
     setProfileInitials(state) {
       state.profileInitials =
@@ -157,10 +161,6 @@ export default new Vuex.Store({
     changeUsername(state, payload) {
       state.profileUsername = payload;
     },
-    //set(state, payload){
-    //state.horarios.push(payload)
-   
-    //},
     eliminar(state,payload){
       state.horarios=state.horarios.filter(item => item.id !== payload)
     },
@@ -221,13 +221,17 @@ export default new Vuex.Store({
       state.clase = state.horarios.find(item => item.id === payload.id)
       const horarioTomado = state.clase
       console.log("horarioTomado :", horarioTomado);
-      state.clase.alumnos.push(payload.userid)
+      state.clase.alumnosNombre.push(payload.username)
+      state.clase.alumnosid.push(payload.userid)
       state.clase.espacio = payload.espacio + 1
       state.horariosTomados.push(horarioTomado)
+      state.horariosNoTomados.filter(item => item.id !== payload.id)
     },
     sacarClase(state,payload){
       state.clase = state.horarios.find(item => item.id === payload.id)
-      state.clase.alumnos.filter(item => item.id !== payload.userid)
+      state.horariosTomados.filter(item => item.id !== payload.id)
+      state.clase.alumnosid.filter(item => item.id !== payload.userid)
+      state.clase.alumnosNombre.filter(item => item.id !== payload.username)
       state.clase.espacio = payload.espacio - 1
       const horarioNoTomado = state.clase
       state.horariosNoTomados.push(horarioNoTomado)
@@ -392,7 +396,6 @@ export default new Vuex.Store({
      var segundo;
      var med = [];
      var docRef = db.collection("users").doc(id);
-     console.log("id :", id);
      docRef.get().then((doc) => {
         primero = doc.data().firstName;
         segundo = doc.data().lastName;
@@ -417,6 +420,7 @@ export default new Vuex.Store({
             usuario.id = doc.id
             usuario.firstName = doc.data().firstName,
             usuario.lastName = doc.data().lastName,
+            usuario.nombreCompleto = doc.data().nombreCompleto,
             usuario.medidas = doc.data().medidas,
             usuario.email = doc.data().email,
             usuario.privilegios = doc.data().privilegios,
@@ -440,31 +444,33 @@ export default new Vuex.Store({
      commit('editarClase',id)
     },    
     
-    async TomarClase({commit},{id,userid,username,userlast,espacio}){
+    async TomarClase({commit},{id,userid,username,espacio}){
         
          const dataBase = await db.collection("Horarios").doc(id);
          await dataBase.update({
-          alumnos: firebase.firestore.FieldValue.arrayUnion(userid), 
+          alumnosid: firebase.firestore.FieldValue.arrayUnion(userid), 
+          alumnosNombre: firebase.firestore.FieldValue.arrayUnion(username), 
           espacio: firebase.firestore.FieldValue.increment(1),
          })
-        commit("updateClase",  {id,userid,username,userlast,espacio})   
+        commit("updateClase",  {id,userid,username,espacio})   
       },
 
-    async DescartarClase({commit},{id,userid,espacio}){
+    async DescartarClase({commit},{id,userid,username,espacio}){
          const dataBase = await db.collection("Horarios").doc(id);
          await dataBase.update({
-           alumnos: firebase.firestore.FieldValue.arrayRemove(userid),
+           alumnosid: firebase.firestore.FieldValue.arrayRemove(userid),
+           alumnosNombre: firebase.firestore.FieldValue.arrayRemove(username), 
            espacio: firebase.firestore.FieldValue.increment(-1),
            //boton: true,
       });
-        commit("sacarClase", {id,userid,espacio})
+        commit("sacarClase", {id,userid,espacio,username})
      },
 
-    async getHorariosTomados({commit}){  
-     
+    async getHorariosTomados({commit},profileId){  
+      //console.log("profile id: ",profileId)
       const horariosTomados = []
       const dataBase = await db.collection("Horarios");
-      const query = await dataBase.where("alumnos","array-contains", "IsBZDGeKUWVFTrAG8wSrYsmaeoA2");
+      const query = await dataBase.where("alumnosid","array-contains", profileId);
       query.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
@@ -475,13 +481,14 @@ export default new Vuex.Store({
         commit("horariosTomados", horariosTomados);
     },
 
-    async getHorariosNoTomados({commit}){              
+    async getHorariosNoTomados({ commit}, profileId ){   
+                 
       const horariosTomados = []
       const dataBase = await db.collection("Horarios");
-      const query = await dataBase.where("alumnos","array-contains", "IsBZDGeKUWVFTrAG8wSrYsmaeoA2");
+      const query = await dataBase.where("alumnosid","array-contains", profileId);
       query.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        var hora = doc.id
+        let hora = doc.id
         horariosTomados.push(hora)
          });
        });
@@ -490,21 +497,36 @@ export default new Vuex.Store({
       const dbResults2 = await dataBase2.get();
       dbResults2.forEach((doc) => {
             let horario = doc.id
+            //horario = doc.data()
             horarios.push(horario)
       })
-      let difference = horarios.filter(x => !horariosTomados.includes(x));
-      var idx = "fStK12m2zPn0nhzJ6Fwg"
-      console.log("Diferencias: ", difference);
-      const horariosSemana3 = []
-      var horario
-      var docRef = db.collection("Horarios").doc(idx);
+     /* var index
+      for(index = 0; index < horariosTomados.length; index++){   
+           console.log("3 : ",horariosTomados[index]);
+        }
+      for(index = 0; index < horarios.length; index++){   
+           console.log("4 : ",horarios[index]);
+        }
+    */
+      let diferencias = [];
+      for (let i = 0; i<horarios.length; i++) {
+           const found = horariosTomados.includes(horarios[i]);
+           if(found === false){
+               diferencias.push(horarios[i])
+           }
+          }
+      console.log("Diferencias: ", diferencias)
+      const horariosNoTomados = []
+      var horario3
+      for (let i = 0; i<diferencias.length; i++) {
+      var docRef = await db.collection("Horarios").doc(diferencias[i])
       docRef.get().then((doc) => {
-          horario = doc.data()
-          horariosSemana3.push(horario)
-          console.log("3 : ",doc.data());
+          horario3 = doc.data()
+          horariosNoTomados.push(horario3)
+          //console.log("3 : ",doc.data());
       });
-     
-      commit("horariosNoTomados", horariosSemana3);
+     }
+      commit("horariosNoTomados", horariosNoTomados);
     
     },
 
@@ -578,6 +600,7 @@ export default new Vuex.Store({
         firstName: state.profileFirstName,
         lastName: state.profileLastName,
         username: state.profileUsername,
+        nombreCompleto : state.nombreCompleto
       });
       commit("setProfileInitials");
     },
