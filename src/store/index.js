@@ -34,7 +34,7 @@ export default new Vuex.Store({
     medidasUsuario:[],
     usuarios:[],
     clasesCreadas:[],
-    privilegio:null,
+    privilegios:null,
     usuarioNombre:null,
     usuarioApellido:null,
     blogPosts: [],
@@ -384,10 +384,10 @@ export default new Vuex.Store({
     async getPrivilegios({commit}, id) {
      var privi;
      var docRef = db.collection("users").doc(id);
-     console.log("privilegios0 :", id);
+     //console.log("privilegios000000 :", id);
      docRef.get().then((doc) => {
         privi = doc.data().privilegios;
-        console.log("privilegios :", privi);
+        //console.log("privilegiosss :", privi);
      commit('privilegio',privi)
       }) 
     },

@@ -1,8 +1,6 @@
 <template>
      <div>
      <H3>Horarios Semana</H3>
-     {{Horarios}}
-     {{NombreCompleto}}
     <table class="table">
         <thead>
             <tr>

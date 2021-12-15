@@ -2,7 +2,7 @@
   <div class="Title">
 
     <h1 class="Title">Horarios y Clases</h1>
-
+     <mostrarTodo />
     <form @submit.prevent="procesarFormulario">
       <Horario :clase="clase" />
     </form>
@@ -13,6 +13,7 @@
     <hr />
     <TablaHorarios />
     <br />
+    
    
     
   </div>
@@ -20,7 +21,7 @@
 
 <script>
 import Horario from "../components/Horario.vue";
-//import Historial from "../components/Historial.vue";
+import mostrarTodo from "../components/mostrarTodo.vue";
 import TablaHorarios from "../components/TablaHorarios.vue";
 import { mapActions } from "vuex";
 const shortid = require("shortid");
@@ -33,7 +34,8 @@ export default {
   name: "CreateHorarios",
   components: {
     Horario,
-    TablaHorarios
+    TablaHorarios,
+    mostrarTodo
   },
   data() {
     return {

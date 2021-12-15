@@ -33,7 +33,7 @@ export default {
 
      async created(){
     // try {
-      await this.$store.dispatch("getHorariosNoTomados", this.$store.state.profileId);
+      await this.$store.dispatch("getHorariosNoTomados", this.profileId);
     // } catch (error) {
     //  console.error(error);
     // }
@@ -44,7 +44,7 @@ export default {
       horariosNoAsistidos(){
       return this.$store.getters.HorarioNoTomado;
       },
-     profileUser(){
+     profileId(){
       return this.$store.state.profileId;  
          },
      NombreCompleto(){

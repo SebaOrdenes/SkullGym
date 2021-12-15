@@ -1,9 +1,10 @@
 <template>
   <div class="blog-card-wrap">
-    <div class="blog-cards container">
+   <h3 v-if="profileAdmin" > No mostrar antes de: </h3>
+    <div v-show="mostrar" class="blog-cards container">
       <HorariosNoTomados />
     </div>
-    <div class="blog-cards container">
+    <div v-show="mostrar" class="blog-cards container">
       <HorariosTomados />
     </div>
   </div>
@@ -13,11 +14,39 @@
 <script>
 import HorariosNoTomados from "../components/HorariosNoTomados";
 import HorariosTomados from "../components/HorariosTomados";
+//import firebase from "firebase/app";
+//import "firebase/storage";
+//import db from "../firebase/firebaseInit";
 export default {
   name: "horarios",
   components: { HorariosTomados, HorariosNoTomados },
-  
-  
+  data() {
+    return {
+      mostrar: null,
+      privilegio : null
+    }
+  },
+  async created(){
+      await this.$store.dispatch("getPrivilegios", this.profileId);
+      //console.log("privilegios... :", this.privilegios);
+      this.mostrar=this.privilegios;
+    },
+  methods: {
+           
+  //if timestamp sea mayor a x && privilegios === False
+  // => mostrar ===True
+  // else-if privilegios === True
+  // => mostrar ===True
+     
+      },
+   computed: {
+    profileId() {
+      return this.$store.state.profileId;
+    },
+    privilegios() {
+      return this.$store.state.privilegios;
+    },
+  }
 };
 </script>
 
