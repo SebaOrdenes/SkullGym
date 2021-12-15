@@ -23,6 +23,8 @@ export default new Vuex.Store({
       historial:null,
       boton: null
     },
+    mostrar:null,
+    horaMostrar:null,
     horarios:[],
     horariosTomados:[],
     horariosNoTomados:[],
@@ -85,6 +87,9 @@ export default new Vuex.Store({
     },
      Usuarios(state) {
       return state.usuarios;
+    },
+    horaMostrar(state) {
+      return state.horaMostrar;
     },
       
  /*   horariosHistorial(state) {
@@ -256,10 +261,34 @@ export default new Vuex.Store({
       state.privilegios=payload
       //console.log("Usuarios: ", state.usuarios);
     },
+    Mostrar(state,payload){
+      state.mostrar=payload.mostrar
+      state.horaMostrar=payload.hora
+       console.log("mostrar :", payload.mostrar);
+       console.log("hora mostrar :", payload.hora);
+    },
    
   },
 
   actions: {  
+    async putMostrar({commit},doc){
+               var mostrar;
+               var hora;
+               const dataBase = await db.collection("BotonMostrar").doc("paoTuc6yDFRhIjqeBEAj");
+               await dataBase.update({
+               mostrar: doc.mostrar,
+               hora: doc.hora
+               });
+               commit("Mostrar", {mostrar,hora});
+            },
+    async getMostrar({commit}){ 
+     var docRef = db.collection("BotonMostrar").doc("paoTuc6yDFRhIjqeBEAj");
+     docRef.get().then((doc) => {
+        let mostrar = doc.data().mostrar;
+        let hora = doc.data().hora;
+        commit('Mostrar',{mostrar,hora})
+      }) 
+    },
     async Privilegios({commit}, {id}){
                const dataBase = await db.collection("users").doc(id);
                await dataBase.update({
@@ -299,7 +328,7 @@ export default new Vuex.Store({
     async putHistorial({commit}, clase){ 
                 //if (clase.historial === true) return;
                 const timestamp = await Date.now();
-                console.log("clase id :", clase.id);
+                
                 const dataBase = await db.collection("historialHorario").doc(clase.id); 
                 await dataBase.set({
                 HorarioID: clase.id,

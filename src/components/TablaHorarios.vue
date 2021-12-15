@@ -47,22 +47,6 @@
             </tr>
         </tbody>
     </table>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Usuarios</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in usuarios" :key="item.id">
-                <th scope="row">{{item.id}}</th>
-                <th scope="row">{{item.firstName}}</th>
-                <th scope="row">{{item.lastName}}</th>
-            </tr>
-        </tbody>
-    </table>
    </div>
 </template>
 
