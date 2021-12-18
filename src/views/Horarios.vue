@@ -22,14 +22,14 @@ export default {
   components: { HorariosTomados, HorariosNoTomados },
   data() {
     return {
-      mostrar: null,
+      mostrar: true,
       privilegio : null
     }
   },
   async created(){
       await this.$store.dispatch("getPrivilegios", this.profileId);
       //console.log("privilegios... :", this.privilegios);
-      this.mostrar=this.privilegios;
+      //this.mostrar=this.privilegios;
     },
   methods: {
            
@@ -43,6 +43,9 @@ export default {
     profileId() {
       return this.$store.state.profileId;
     },
+   profileAdmin() {
+      return this.$store.state.profileAdmin;   
+       },
     privilegios() {
       return this.$store.state.privilegios;
     },

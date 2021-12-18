@@ -15,13 +15,13 @@
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.hora}}</td>
-                <th v-for="element in item.alumnos" :key="element.id">
-                   <li>
-                     {{element.name}} {{element.apellido}}
-                   </li>
-                </th>  
+               <td v-if="profileAdmin" >
+                   <li v-for="element in item.alumnosNombre" :key="element.id">
+                     {{element}}
+                   </li>  
+                </td> 
                 <td v-if="profileAdmin">
-                        <button @click="deleteHisto(item.id)"> Eliminar </button>
+                        <button @click="deleteHisto(item.id)"> Restaurar </button>
                  </td>
                  <td v-if="profileAdmin">
                         <button @click="deleteHistoPermanente(item.id)"> Eliminar Permanente</button>
@@ -58,7 +58,7 @@ export default {
     computed:{
      //...mapState(['histo2']),
     historialHorarios(){
-      return this.$store.getters.horariosHistorial;
+      return this.$store.state.historialHorarios;
     },
      profileAdmin() {
       return this.$store.state.profileAdmin;   

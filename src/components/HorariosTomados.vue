@@ -2,6 +2,7 @@
      <div>
      
     <H3>Horarios Tomados</H3>
+    {{this.$store.getters.horariosTomados}}
     <table class="table">
         <thead>
             <tr>
@@ -13,13 +14,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in horariosAsist" :key="item.id">
+            <tr v-for="item in horariosTomado" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="DescartarClase({id: item.HorarioID, userid: profileUser, username: NombreCompleto, espacio: item.espacio})"> No asistir </button>
+                        <button @click="DescartarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> No asistir </button>
                 </td>
             </tr>
         </tbody>
@@ -30,19 +31,31 @@
 <script>
 import { mapState,mapActions} from 'vuex'
 export default {
-  
+    data() {
+    return {
+      perfilId:null,
+      horariosTomados:[]
+      };
+    },
     async created(){
-    // try {
+     try {
       await this.$store.dispatch("getHorariosTomados",this.profileId);
-    // } catch (error) {
-    //  console.error(error);
-    // }
-   
+     } catch (error) {
+      console.error(error);
+     }
+      this.perfilId=this.$store.state.profileId
+       console.log("perfilId created:",this.perfilId)
+      try {
+      await this.$store.dispatch("getHorariosTomados", this.perfilId);
+     } catch (error) {
+      console.error(error);
+     }
     },
     computed:{
      ...mapState(['clase','clase.boton','profileId']),
-      horariosAsist(){
-      return this.$store.getters.horariosAsistidos;
+      horariosTomado(){
+      //console.log("horariosAsistidos getter computed:",this.$store.getters.horariosTomados)
+      return this.$store.getters.horariosTomados;
       },
      profileId(){
       return this.$store.state.profileId;  

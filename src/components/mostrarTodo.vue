@@ -1,48 +1,78 @@
 <template>
   <div>
      
-     <p v-show="!mostrar" class="font-weight-bold">Mostrar a Todos a las: {{this.horaMostr}} {{this.horaMostrar}}</p>
-     <p  v-show="mostrar"  class="font-weight-bold">Ingresa a que hora estará disponible para todos</p>
+     <p v-show="!this.mostrar" class="font-weight-bold">Mostrar a Todos a las: {{this.horaMostr}} {{this.horaMostrar}} {{this.most}} {{this.$store.state.mostrar}}</p>
+     <p  v-show="mostrar"  class="font-weight-bold">Ingresa a que hora estará disponible para todos  {{this.most}} {{this.$store.state.mostrar}}</p>
      <b-form-timepicker v-show="mostrar" v-model="hora"  size="sm" ></b-form-timepicker>
-     <button @click="HoraMostrar"> Hora a Mostrar </button>
-
+     <button @click="HoraMostrar" v-if="mostrar"> Ingresar Hora a Mostrar </button>
+     <button @click="HoraMostrar" v-else> Editar Hora a Mostrar </button>
+                        
    
   </div>
 </template>
 
 <script>
-import { mapActions} from 'vuex'
+import { mapState,mapActions} from 'vuex'
 export default {
   
   data() {
     return {
+      horaMostr:null,
       hora:null,
       most:null
     };
   },
+    beforeCreate() {
+      console.log("beforeCreate")
+    },
    async created(){
      try {
       await this.$store.dispatch("getMostrar");
      } catch (error) {
       console.error(error);
      }
+      console.log("mostrar created:",this.mostrar)
+      console.log("hora mostrar created",this.horaMostrar)
+      
+    },
+   mounted() {
+       this.$nextTick(function () {
+       console.log("mounted")
+       
+    })
+   },
+
+    beforeUpdate() {
+      console.log("beforeUpdate")
+      this.most=this.mostrar
+      console.log("mostrar beforeUpdate",this.most)
     },
     methods: {
     ...mapActions(['putMostrar']),
     HoraMostrar() {
-     var estado = this.mostrar;
-     this.putMostrar({mostrar:!estado,hora: this.hora});
-     console.log(this.mostrar)
+     console.log("mostrar1:",this.mostrar)
+     this.putMostrar({mostrar: !this.mostrar, hora: this.hora});
+     //this.mostrar=!this.mostrar
+     console.log("mostrar2:",this.mostrar)
+     console.log(this.hora)
      this.horaMostr=this.hora
+     this.most=!this.most
     },
   },
    computed: {
+    //mostrar2() {
+    //  console.log("mostrar state: computed")
+    //  return this.$store.state.mostrar;
+    //},
     mostrar() {
-      return this.$store.state.mostrar;
+      console.log("mostrar getter: computed")
+      return this.$store.getters.mostrar;
     },
      horaMostrar() {
+      console.log("hora getter: computed")
       return this.$store.getters.horaMostrar;
     },
+    ...mapState(['mostrar']),
   }
 };
 </script>

@@ -68,44 +68,32 @@ export default new Vuex.Store({
       return state.horarios;
     },
     horariosNoHistorial(state) {
-      return state.horarios.filter(horario => {
-        return horario.historial === false;
-      });
+      return state.horarios;//.filter(horario => {
+        //return horario.historial === false;
+      //});
     },
     horariosHistorial(state) {
       return state.historialHorarios;
     },
 
-    horariosAsistidos(state) {
+    horariosTomados(state) {
       return state.horariosTomados;
     },
-    HorarioNoTomado(state) {
-      return state.horariosNoTomados;//Tomados.map(item => {
-        //return state.horariosTomados.find(horariosTomados => horariosTomados.id !== item.id);
-       
-       // })
+    horariosNoTomados(state) {
+      return state.horariosNoTomados;
     },
      Usuarios(state) {
       return state.usuarios;
     },
+    mostrar(state) {
+      console.log("mostrar getter:", state.mostrar)
+      return state.mostrar;
+    },
     horaMostrar(state) {
+      console.log("hora getter:", state.horaMostrar)
       return state.horaMostrar;
     },
-      
- /*   horariosHistorial(state) {
-      console.log("Historial horarios .. : " ,state.historialHorarios)
-      return state.historialHorarios.map(item => {
-        const horario = state.horarios.find(horario => horario.historial === item.true);
-        console.log("Historial horarios 2 .. : " ,horario)
-        return {
-          HorarioID: horario.id,
-          fecha: horario.fecha,
-          tipo: horario.tipo,
-          hora: horario.horas, 
-          alumnos: horario.alumnos,
-        };
-      });
-    }*/
+     
     
   },
   mutations: {
@@ -201,38 +189,39 @@ export default new Vuex.Store({
     HistorialHorarios(state,clase){
       clase.historial=true;
       state.historialHorarios.push(clase);
-      console.log("historialHorarios: ", clase);
+     // console.log("historialHorarios: ", clase);
     },
     Historial(state,payload){
       state.historialHorarios=payload
       
     },
-    horariosTomados(state,payload){
+  /*  horariosTomados(state,payload){
       state.horariosTomados=payload
-    },
+    },*/
     sacarhorario(state,payload){
       console.log("payload: ", payload);
       state.horarios.filter(item => item.id !== payload)
-      console.log("Historial No tomados: ", state.horarios);
+     // console.log("Historial No tomados: ", state.horarios);
     },
      horariosNoTomados(state,payload){
       state.horariosNoTomados=payload
-      console.log("Horarios no tomados: ", state.horariosNoTomados);
+    //  console.log("Horarios no tomados: ", state.horariosNoTomados);
     },
     setHorario(state,payload){
       state.horarios = payload;
     },
     updateClase(state,payload){
-      state.clase = state.horarios.find(item => item.id === payload.id)
-      const horarioTomado = state.clase
-      console.log("horarioTomado :", horarioTomado);
+      state.horariosTomados=payload
+      /*state.clase = state.horarios.find(item => item.id === payload.id)
       state.clase.alumnosNombre.push(payload.username)
       state.clase.alumnosid.push(payload.userid)
       state.clase.espacio = payload.espacio + 1
+      const horarioTomado = state.clase
+      console.log("horarioTomado :", horarioTomado);
       state.horariosTomados.push(horarioTomado)
-      state.horariosNoTomados.filter(item => item.id !== payload.id)
+      state.horariosNoTomados.filter(item => item.id !== payload.id)*/
     },
-    sacarClase(state,payload){
+    /*sacarClase(state,payload){
       state.clase = state.horarios.find(item => item.id === payload.id)
       state.horariosTomados.filter(item => item.id !== payload.id)
       state.clase.alumnosid.filter(item => item.id !== payload.userid)
@@ -240,7 +229,7 @@ export default new Vuex.Store({
       state.clase.espacio = payload.espacio - 1
       const horarioNoTomado = state.clase
       state.horariosNoTomados.push(horarioNoTomado)
-    }, 
+    },*/ 
     EstadoBoton(state,payload){
       state.clase.boton = payload
     },
@@ -261,32 +250,31 @@ export default new Vuex.Store({
       state.privilegios=payload
       //console.log("Usuarios: ", state.usuarios);
     },
-    Mostrar(state,payload){
+    Mostrar2(state,payload){
       state.mostrar=payload.mostrar
       state.horaMostrar=payload.hora
-       console.log("mostrar :", payload.mostrar);
-       console.log("hora mostrar :", payload.hora);
+      console.log("mostrar.. :", state.mostrar);
+      console.log("hora mostrar.. :", state.hora);
     },
    
   },
 
   actions: {  
     async putMostrar({commit},doc){
-               var mostrar;
-               var hora;
+              
                const dataBase = await db.collection("BotonMostrar").doc("paoTuc6yDFRhIjqeBEAj");
                await dataBase.update({
-               mostrar: doc.mostrar,
-               hora: doc.hora
+                mostrar : doc.mostrar,
+                hora : doc.hora,
                });
-               commit("Mostrar", {mostrar,hora});
+               commit('Mostrar2', {mostrar:doc.mostrar,hora:doc.hora});
             },
     async getMostrar({commit}){ 
      var docRef = db.collection("BotonMostrar").doc("paoTuc6yDFRhIjqeBEAj");
      docRef.get().then((doc) => {
         let mostrar = doc.data().mostrar;
         let hora = doc.data().hora;
-        commit('Mostrar',{mostrar,hora})
+        commit('Mostrar2',{mostrar,hora})
       }) 
     },
     async Privilegios({commit}, {id}){
@@ -317,7 +305,7 @@ export default new Vuex.Store({
                 horas: tar.horas,
                 cupos: tar.cupos,
                 espacio: tar.espacio,
-                alumnos: [],
+                alumnosNombre: [],
                 date: timestamp,
                 historial: tar.historial,
                 boton: tar.boton
@@ -336,17 +324,33 @@ export default new Vuex.Store({
                 fecha: clase.fecha,
                 tipo: clase.tipo,
                 hora: clase.horas, 
-                alumnos: clase.alumnos,
-                //historial: clase.historial
+                alumnosNombre: clase.alumnosNombre,
+                cupos: clase.cupos,
+                espacio: clase.espacio
                 });
                commit("HistorialHorarios", clase);   
               
   
-               const dataBase2 = await db.collection("Horarios").doc(clase.id); 
-               await dataBase2.update({ 
-               historial: true,
-              }); 
-              // commit("HistorialHorario",true);
+               await db.collection("Horarios").doc(clase.id).delete() 
+
+               const horarios = []
+               const dataBase2 = await db.collection("Horarios")//.orderBy("date", "desc");
+               const dbResults = await dataBase2.get();
+      
+               dbResults.forEach((doc) => {
+               let horario = doc.data()
+               horario.id = doc.id 
+               horario.alumnosNombre = doc.data().alumnosNombre
+               horario.fecha = doc.data().fecha
+               horario.horas = doc.data().horas
+               horario.cupos = doc.data().cupos
+               horario.espacio = doc.data().espacio
+               horario.tipo = doc.data().tipo
+               horario.historial = doc.data().historial
+           // console.log("botonHistorial1 :",  horario.historial);  
+              horarios.push(horario)
+          })
+             commit("setHorario", horarios);
     },
     
     async getHistorial({commit}){              
@@ -358,7 +362,7 @@ export default new Vuex.Store({
        dbResults.forEach((doc) => {
             let horario = doc.data()
             horario.id = doc.id 
-            horario.alumnos = doc.data().alumnos
+            horario.alumnosNombre = doc.data().alumnosNombre
             horario.fecha = doc.data().fecha
             horario.horas = doc.data().horas
             horario.tipo = doc.data().tipo
@@ -380,7 +384,7 @@ export default new Vuex.Store({
        dbResults.forEach((doc) => {
             let horario = doc.data()
             horario.id = doc.id 
-            horario.alumnos = doc.data().alumnos
+            horario.alumnos = doc.data().alumnosNombre
             horario.fecha = doc.data().fecha
             horario.horas = doc.data().horas
             horario.cupos = doc.data().cupos
@@ -473,41 +477,117 @@ export default new Vuex.Store({
      commit('editarClase',id)
     },    
     
-    async TomarClase({commit},{id,userid,username,espacio}){
-        
+    async TomarClase({commit},{id,userid,username}){
+         
          const dataBase = await db.collection("Horarios").doc(id);
          await dataBase.update({
           alumnosid: firebase.firestore.FieldValue.arrayUnion(userid), 
           alumnosNombre: firebase.firestore.FieldValue.arrayUnion(username), 
           espacio: firebase.firestore.FieldValue.increment(1),
          })
-        commit("updateClase",  {id,userid,username,espacio})   
-      },
+   
+        const horarios = []
+        const dataBase2 = await db.collection("Horarios")
+        const dbResults2 = await dataBase2.get();
+        dbResults2.forEach((doc) => {
+            let horario = doc.id
+            horarios.push(horario)
+        })
 
-    async DescartarClase({commit},{id,userid,username,espacio}){
-         const dataBase = await db.collection("Horarios").doc(id);
-         await dataBase.update({
+        let ArrayNuevo = horarios.filter(ids => ids !== id);
+        commit("horariosNoTomados", ArrayNuevo ) 
+        
+        const horarioTomado=[]
+        var docRef = db.collection("Horarios").doc(id);
+        docRef.get().then((doc) => {
+        const horario = []
+        horario.fecha = doc.data().fecha;
+        horario.tipo = doc.data().tipo;
+        horario.horas = doc.data().horas;
+        horario.cupos = doc.data().cupos;
+        horario.espacio = doc.data().espacio;
+        horarioTomado.push(horario)
+      })   
+        commit("updateClase",  horarioTomado)   
+     },
+
+     async DescartarClase({commit},{id,userid,username}){
+        
+        const horariosTomados = []
+        const dataBase2 = await db.collection("Horarios");
+        const query = await dataBase2.where("alumnosid","array-contains", userid);
+        query.get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+           let hora = doc.id
+           horariosTomados.push(hora)
+         });
+        });
+
+        const dataBase = await db.collection("Horarios").doc(id);
+        await dataBase.update({
            alumnosid: firebase.firestore.FieldValue.arrayRemove(userid),
            alumnosNombre: firebase.firestore.FieldValue.arrayRemove(username), 
            espacio: firebase.firestore.FieldValue.increment(-1),
-           //boton: true,
-      });
-        commit("sacarClase", {id,userid,espacio,username})
+        });
+        
+
+       const horarios = []
+       const dataBase3 = await db.collection("Horarios")
+       const dbResults2 = await dataBase3.get();
+       dbResults2.forEach((doc) => {
+            let horario = doc.id
+            horarios.push(horario)
+       })
+   
+       let diferencias = [];
+       for (let i = 0; i<horarios.length; i++) {
+           const found = horariosTomados.includes(horarios[i]);
+           if(found === false){
+               diferencias.push(horarios[i])
+           }
+       }
+      
+       const horariosNoTomados = []
+       var horario3
+       for (let i = 0; i<diferencias.length; i++) {
+          var docRef = await db.collection("Horarios").doc(diferencias[i])
+          docRef.get().then((doc) => {
+            horario3 = doc.data()
+            horariosNoTomados.push(horario3)
+         });
+       }
+       commit("horariosNoTomados", horariosNoTomados) 
+       let ArrayNuevo = horariosTomados.filter(ids => ids !== id);
+       const horariosTomadosNuevo = []
+       var horario4
+       for (let i = 0; i<ArrayNuevo.length; i++) {
+          var docRef2 = await db.collection("Horarios").doc(ArrayNuevo[i])
+          docRef2.get().then((doc) => {
+            horario4 = doc.data()
+            horariosTomadosNuevo.push(horario4)
+         });
+       }
+       commit("updateClase", horariosTomadosNuevo)
      },
 
     async getHorariosTomados({commit},profileId){  
-      //console.log("profile id: ",profileId)
       const horariosTomados = []
       const dataBase = await db.collection("Horarios");
       const query = await dataBase.where("alumnosid","array-contains", profileId);
-      query.get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
+      //if (query.lenght === undefined) {
+      // console.log('=== largo indefinido ===',query.lenght);
+      //}else {
+      // console.log('=== largo definido ===',query.lenght);
+       query.get().then((querySnapshot) => {
+       querySnapshot.forEach((doc) => {
         console.log(doc.id, ' => ', doc.data());
         var hora = doc.data()
         horariosTomados.push(hora)
          });
        });
-        commit("horariosTomados", horariosTomados);
+      //}
+      
+      commit("updateClase", horariosTomados);
     },
 
     async getHorariosNoTomados({ commit}, profileId ){   
@@ -515,6 +595,7 @@ export default new Vuex.Store({
       const horariosTomados = []
       const dataBase = await db.collection("Horarios");
       const query = await dataBase.where("alumnosid","array-contains", profileId);
+      console.log('=== largo definido ===',query);
       query.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         let hora = doc.id
@@ -544,12 +625,12 @@ export default new Vuex.Store({
                diferencias.push(horarios[i])
            }
           }
-      console.log("Diferencias: ", diferencias)
+     // console.log("Diferencias: ", diferencias)
       const horariosNoTomados = []
       var horario3
       for (let i = 0; i<diferencias.length; i++) {
-      var docRef = await db.collection("Horarios").doc(diferencias[i])
-      docRef.get().then((doc) => {
+        var docRef = await db.collection("Horarios").doc(diferencias[i])
+        docRef.get().then((doc) => {
           horario3 = doc.data()
           horariosNoTomados.push(horario3)
           //console.log("3 : ",doc.data());

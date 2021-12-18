@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in Horarios" :key="item.id">
+            <tr v-for="item in horariosNoHistorial" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
@@ -66,6 +66,9 @@ export default {
       ...mapState(['usuarios']), 
       Horarios(){
       return this.$store.getters.Horarios;
+      },
+      horariosNoHistorial(){
+      return this.$store.getters.horariosNoHistorial;
       },
       Users(){
       return this.$store.getters.Usuarios;

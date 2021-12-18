@@ -1,6 +1,7 @@
 <template>
      <div>
-    <H3>Horarios Disponibles</H3>
+    <H3>Horarios Disponibles </H3>
+    {{this.$store.getters.horariosNoTomados}}
     <table class="table">
         <thead>
             <tr>
@@ -12,13 +13,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in horariosNoAsistidos" :key="item.id">
+            <tr v-for="item in horariosNoTomado" :key="item.id">
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="TomarClase({id: item.HorarioID, userid: profileUser, username: NombreCompleto, espacio: item.espacio})"> asistir </button>
+                        <button @click="TomarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> asistir </button>
                 </td>
             </tr>
         </tbody>
@@ -30,21 +31,34 @@
 <script>
 import { mapState,mapActions} from 'vuex'
 export default {
-
+   data() {
+    return {
+      perfilId:null,
+      horariosNoTomados:[]
+      };
+    },
      async created(){
-    // try {
+     try {
       await this.$store.dispatch("getHorariosNoTomados", this.profileId);
-    // } catch (error) {
-    //  console.error(error);
-    // }
-   
+     } catch (error) {
+      console.error(error);
+     }
+       this.perfilId=this.$store.state.profileId
+       //console.log("perfilId created:",this.perfilId)
+      try {
+      await this.$store.dispatch("getHorariosNoTomados", this.perfilId);
+     } catch (error) {
+      console.error(error);
+     }
     },
     computed:{
-     ...mapState(['clase','clase.boton','profileId']),
-      horariosNoAsistidos(){
-      return this.$store.getters.HorarioNoTomado;
+     ...mapState(['clase','profileId']),
+      horariosNoTomado(){
+      //console.log("HorarioNoTomado getter computed:", this.$store.getters.horariosNoTomados)
+      return this.$store.getters.horariosNoTomados;
       },
      profileId(){
+     // console.log("perfilID computed:", this.$store.state.profileId)
       return this.$store.state.profileId;  
          },
      NombreCompleto(){
