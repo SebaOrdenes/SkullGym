@@ -19,7 +19,7 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="TomarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> asistir </button>
+                        <button @click="TomarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> Asistir </button>
                 </td>
             </tr>
         </tbody>
@@ -45,11 +45,6 @@ export default {
      }
        this.perfilId=this.$store.state.profileId
        //console.log("perfilId created:",this.perfilId)
-      try {
-      await this.$store.dispatch("getHorariosNoTomados", this.perfilId);
-     } catch (error) {
-      console.error(error);
-     }
     },
     computed:{
      ...mapState(['clase','profileId']),

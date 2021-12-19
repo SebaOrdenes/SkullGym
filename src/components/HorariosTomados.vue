@@ -20,7 +20,7 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="DescartarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> No asistir </button>
+                        <button @click="DescartarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> Descartar </button>
                 </td>
             </tr>
         </tbody>
@@ -45,16 +45,11 @@ export default {
      }
       this.perfilId=this.$store.state.profileId
        console.log("perfilId created:",this.perfilId)
-      try {
-      await this.$store.dispatch("getHorariosTomados", this.perfilId);
-     } catch (error) {
-      console.error(error);
-     }
     },
     computed:{
-     ...mapState(['clase','clase.boton','profileId']),
+     ...mapState(['profileId']),
       horariosTomado(){
-      //console.log("horariosAsistidos getter computed:",this.$store.getters.horariosTomados)
+      console.log("horariosAsistidos getter computed:",this.$store.getters.horariosTomados)
       return this.$store.getters.horariosTomados;
       },
      profileId(){
@@ -65,7 +60,7 @@ export default {
      }
     },
     methods:{
-      ...mapActions(['getPrivilegios','TomarClase','DescartarClase','getHorariosTomados']),  
+      ...mapActions(['getPrivilegios','TomarClase','DescartarClase']),  
       
   
      
