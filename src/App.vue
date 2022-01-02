@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <div class="app" v-if="this.$store.state.postLoaded">
-      <Navigation v-if="!navigation" />
+      <Navigation2 v-if="!navigation" />
       <router-view />
       <Footer v-if="!navigation" />
     </div>
@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import Navigation from "./components/Navigation";
+import Navigation2 from "./components/Navigation2";
 import Footer from "./components/Footer";
 import firebase from "firebase/app";
 import "firebase/auth";
 export default {
   name: "app",
-  components: { Navigation, Footer },
+  components: { Navigation2, Footer },
   data() {
     return {
       navigation: null,

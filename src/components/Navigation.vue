@@ -10,23 +10,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <input type ="checkbox" name ="" id ="chk1">
-        
-           <div class="logo">    <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link>Skull Fitness Gym<router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'></router-link> </div>
-          
-            <ul>
+
+
+<header>
+       <!-- <input type ="checkbox" name ="" id ="chk1"> -->
+     <nav class="container">
+         <div class="logo">    
+           <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'> </router-link> Skull Gym<router-link class="link" :to="{ name: 'Home' }"> </router-link> </div>
+         
+   <!-- <ul> -->
       <div class="nav-links">
         <ul v-show="!mobile">
-            <li>
           <router-link class="link" :to="{ name: 'Home' }">Inicio</router-link>
           <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Post</router-link>
-           <router-link v-if="admin" class="link" :to="{ name: 'CreateHorario' }">Crear Horario</router-link>
-           
+          <router-link v-if="admin" class="link" :to="{ name: 'CreateHorario' }">Crear Horario</router-link>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Registro</router-link>
           <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
-
           <router-link v-if="admin" class="link" :to="{ name: 'Alumnos' }">Alumnos</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'HistorialHorarios' }">Historial</router-link>
  
@@ -37,39 +37,66 @@
                             alumnoid:  this.$store.state.profileId
                           }
                           }"
-                          >
-                          Avances
-        
-          </router-link>
-
-           <div @click="signOut" class="option" v-if="admin">
-                   <p1>Salir</p1>
+                          >Avances
+                   </router-link>
+          </ul>
+          <div v-if="user" :class="{ 'mobile-user-menu': mobile }" @click="toggleProfileMenu" class="profile" ref="profile">
+          <span>{{ this.$store.state.profileInitials }}</span>
+          <div v-show="profileMenu" class="profile-menu">
+            <div class="info">
+              <p class="initials">{{ this.$store.state.profileInitials }}</p>
+              <div class="right">
+                <p>{{ this.$store.state.profileFirstName }} {{ this.$store.state.profileLastName }}</p>
+                <p>{{ this.$store.state.profileUsername }}</p>
+                <p>{{ this.$store.state.profileEmail }}</p>
+              </div>
+            </div>
+            <div class="options">
+              <div class="option">
+                <router-link class="option" :to="{ name: 'Profile' }">
+                  <userIcon class="icon" />
+                  <p>Profile</p>
+                </router-link>
+              </div>
+              <div v-if="admin" class="option">
+                <router-link class="option" :to="{ name: 'Admin' }">
+                  <adminIcon class="icon" />
+                  <p>Admin</p>
+                </router-link>
+              </div>
+              <div @click="signOut" class="option">
+                <signOutIcon class="icon" />
+                <p>Sign Out</p>
+              </div>
+            </div>
           </div>
-              
-        </li>
-        </ul>
- 
+        </div>
       </div>
-        <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
+      <!-- </ul> -->
+     </nav>         
+        
+     
+     
+    <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
           <li>
         <router-link class="link" :to="{ name: 'Home' }">Inicio</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
         <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Post</router-link>
-         <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Horario</router-link>
-         <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
+        <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Horario</router-link>
+        <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
         <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
           </li>
       </ul>
     </transition>
                 
-            </ul>
-            <div class="menu">
+  
+        <!--     <div class="menu">
                 <label for="chk1">
                     <i class="fa fa-bars"></i>
                 </label>
-            </div>
+            </div>-->
     </header>
   
 </body>
@@ -172,12 +199,21 @@ header{
     z-index: 99;
     box-shadow: 0 0 10px #000;
     background: rgba(0,0,0,0.5);
+ 
+    .link {
+    font-weight: 500;
+    padding: 0 8px;
+    transition: 0.3s color ease;
 
+    &:hover {
+      color: #1eb8b8;
+    }
+  }
 
-
-    
 
 }
+
+
 #chk1{
     display: none;
      
@@ -190,7 +226,7 @@ i{
 header .logo{
     flex: 1;
     color:#fff;
-     font-family: 	Courier New;
+    font-family: Courier New;
     margin-left: 50px;
     text-transform: uppercase;
     font-size: 30px;
@@ -256,6 +292,8 @@ header .menu{
         width:100%;
     }
 }
+
+
 
 
 </style>

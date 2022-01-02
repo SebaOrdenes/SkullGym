@@ -1,12 +1,23 @@
 <template>
   <div class="blog-card-wrap">
-   <h3 v-if="profileAdmin" > No mostrar antes de: </h3>
-    <div v-show="mostrar" class="blog-cards container">
+   <h3> Horarios disponibles: </h3>
+    <div v-show="mostrarConPrivilegios" class="blog-cards container">
       <HorariosNoTomados />
     </div>
-    <div v-show="mostrar" class="blog-cards container">
+    <div v-show="mostrarConPrivilegios" class="blog-cards container">
       <HorariosTomados />
+    
     </div>
+
+    <div v-show="mostrarTodos" class="blog-cards container">
+      <HorariosNoTomados />
+    </div>
+    <div v-show="mostrarTodos" class="blog-cards container">
+      <HorariosTomados />
+    
+    </div>
+
+
   </div>
 </template>
 
@@ -23,13 +34,32 @@ export default {
   data() {
     return {
       mostrar: true,
-      privilegio : null
+      privilegio : null,
+      mostrarTodos: null,
+      mostrarConPrivilegios:null
     }
   },
   async created(){
+     try {
+       await this.$store.dispatch("getMostrar");
+      } catch (error) {
+       console.error(error);
+      }
+      let fecha1 = this.$store.getters.MostrarHorario;
+      console.log("mostrar created:",fecha1)
       await this.$store.dispatch("getPrivilegios", this.profileId);
-      //console.log("privilegios... :", this.privilegios);
-      //this.mostrar=this.privilegios;
+      console.log("privilegios... :", this.privilegios);
+      this.mostrar=this.privilegios;
+      if (fecha1==false && this.mostrar==true){
+           console.log("Mostrar con Privilegios... :", this.privilegios);
+           this.mostrarConPrivilegios=true;
+      }else if(fecha1==false && this.mostrar==false){
+          console.log("No muestra ya que no tiene privilegios ");
+          this.mostrarTodos=false;
+      }else if(fecha1==true){
+          console.log("Mostrar a Todos" );
+          this.mostrarTodos=true;
+      }
     },
   methods: {
            
@@ -48,6 +78,9 @@ export default {
        },
     privilegios() {
       return this.$store.state.privilegios;
+    },
+    MostrarHorario() {
+      return this.$store.getters.MostrarHorario;
     },
   }
 };

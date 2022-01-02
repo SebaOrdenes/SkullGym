@@ -24,6 +24,7 @@ export default new Vuex.Store({
       boton: null
     },
     mostrar:null,
+    MostrarHorario:null,
     horaMostrar:null,
     horarios:[],
     horariosTomados:[],
@@ -86,12 +87,16 @@ export default new Vuex.Store({
       return state.usuarios;
     },
     mostrar(state) {
-      console.log("mostrar getter:", state.mostrar)
+     // console.log("mostrar getter:", state.mostrar)
       return state.mostrar;
     },
     horaMostrar(state) {
-      console.log("hora getter:", state.horaMostrar)
+     // console.log("hora getter:", state.horaMostrar)
       return state.horaMostrar;
+    },
+    MostrarHorario(state) {
+     // console.log("hora getter:", state.horaMostrar)
+      return state.MostrarHorario;
     },
      
     
@@ -160,7 +165,7 @@ export default new Vuex.Store({
     eliminardeHistorial(state,id){
       state.historialHorarios=state.historialHorarios.filter(item => item.id !== id)
       state.clase = state.horarios.find(item => item.id === id)
-      console.log("state clase: ", state.clase);
+      //console.log("state clase: ", state.clase);
       state.clase.historial=false
     },
     deleteclase(state,payload){
@@ -199,7 +204,7 @@ export default new Vuex.Store({
       state.horariosTomados=payload
     },
     sacarhorario(state,payload){
-      console.log("payload: ", payload);
+      //console.log("payload: ", payload);
       state.horarios.filter(item => item.id !== payload)
      // console.log("Historial No tomados: ", state.horarios);
     },
@@ -247,9 +252,10 @@ export default new Vuex.Store({
     },
     Mostrar2(state,payload){
       state.mostrar=payload.mostrar
-      state.horaMostrar=payload.hora
-      console.log("mostrar.. :", state.mostrar);
-      console.log("hora mostrar.. :", state.hora);
+      state.horaMostrar=payload.date
+      state.MostrarHorario=payload.MostrarHorario
+      //console.log("mostrar.. :", state.mostrar);
+      //console.log("hora mostrar.. :", state.horaMostrar);
     },
    
   },
@@ -265,11 +271,26 @@ export default new Vuex.Store({
                commit('Mostrar2', {mostrar:doc.mostrar,hora:doc.hora});
             },
     async getMostrar({commit}){ 
+     var MostrarHorario;
      var docRef = db.collection("BotonMostrar").doc("paoTuc6yDFRhIjqeBEAj");
      docRef.get().then((doc) => {
         let mostrar = doc.data().mostrar;
         let hora = doc.data().hora;
-        commit('Mostrar2',{mostrar,hora})
+        var date = new Date(hora.toDate()).toLocaleString()
+        //console.log("DATA HORA TIMESTAMP ..  :",new Date());
+        //console.log("DATA HORA TIMESTAMP 2 ..  :",hora.toDate());
+        let fecha2 = new Date();
+        if(fecha2 > hora.toDate()){
+             // console.log("MOSTRAR: TRUE")
+              MostrarHorario=true
+        }else{
+             // console.log("MOSTRAR: FALSE")
+              MostrarHorario=false
+        }
+        //console.log("FECHA: ",fecha2)
+        //let resta = hora.toDate() - fecha2;
+        //console.log("RESTA", resta)
+        commit('Mostrar2',{mostrar,date,MostrarHorario})
       }) 
     },
     async Privilegios({commit}, {id}){
@@ -291,7 +312,7 @@ export default new Vuex.Store({
 
     async PutHorario({commit},tar){  
               const timestamp= firebase.firestore.FieldValue.serverTimestamp()
-              console.log("historial ..  :", tar.historial);
+            //  console.log("historial ..  :", tar.historial);
               const dataBase = await db.collection("Horarios").doc();
               await dataBase.set({ 
                 HorarioID: dataBase.id,
@@ -554,17 +575,20 @@ export default new Vuex.Store({
            alumnosNombre: firebase.firestore.FieldValue.arrayRemove(username), 
            espacio: firebase.firestore.FieldValue.increment(-1),
         });
-        
+        var horariotomado
         const horariosTomados = []
+        const horariosTomadosid = []
         const dataBase2 = await db.collection("Horarios");
         const query = await dataBase2.where("alumnosid","array-contains", userid);
         query.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
            let hora = doc.id
-           horariosTomados.push(hora)
+           horariotomado = doc.data()
+           horariosTomadosid.push(hora)
+           horariosTomados.push(horariotomado)
          });
         });
-       console.log(' horariosTomado2 => ', horariosTomados);
+     //  console.log(' horariosTomado2 => ', horariosTomadosid);
        const horarios = []
        const dataBase3 = await db.collection("Horarios")
        const dbResults2 = await dataBase3.get();
@@ -575,7 +599,7 @@ export default new Vuex.Store({
    
        let diferencias = [];
        for (let i = 0; i<horarios.length; i++) {
-           const found = horariosTomados.includes(horarios[i]);
+           const found = horariosTomadosid.includes(horarios[i]);
            if(found === false){
                diferencias.push(horarios[i])
            }
@@ -616,12 +640,12 @@ export default new Vuex.Store({
        query.get().then((querySnapshot) => {
        querySnapshot.forEach((doc) => {
         const hora = doc.data()
-        console.log(" => :", Object.values(hora));
+        //console.log(" => :", Object.values(hora));
         horariosTomados.push(hora)
          });
        });
       //}
-      console.log(' horariosTomadoss => ', horariosTomados);
+    //  console.log(' horariosTomadoss => ', horariosTomados);
       commit("horariosTomados", horariosTomados);
     },
 

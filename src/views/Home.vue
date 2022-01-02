@@ -5,25 +5,18 @@
       
    <!-- <BlogPost v-if="!user" :post="welcomeScreen" /> -->
      
-      <div >
+   <!--   <div >
         <h2>Tu cambio comienza hoy, únete a skull fitness gym</h2>
         <router-link class="router-button" :to="{ name: 'Register'}"> Registrate ahora <Arrow class="arrow arrow-light" /> </router-link>
-      </div>
+      </div> -->
   </div>
 </template>
 
 
 
-
-
-
-
-
 <script>
 
-
 import CarrouselInicio from "../components/CarrouselInicio.vue"
-
 
 export default {
   name: "Home",
@@ -39,18 +32,6 @@ export default {
 
 <style lang="scss" scoped>
 
-
-div {
-  background-image: url("https://image.freepik.com/free-photo/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall_1258-28313.jpg");
-    color: white;
-    padding: 100px 25px;
-    width: 100%;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  
-}
 
 
 .blog-card-wrap {

@@ -44,12 +44,12 @@ export default {
       console.error(error);
      }
       this.perfilId=this.$store.state.profileId
-       console.log("perfilId created:",this.perfilId)
+      //console.log("perfilId created:",this.perfilId)
     },
     computed:{
      ...mapState(['profileId']),
       horariosTomado(){
-      console.log("horariosAsistidos getter computed:",this.$store.getters.horariosTomados)
+      //console.log("horariosAsistidos getter computed:",this.$store.getters.horariosTomados)
       return this.$store.getters.horariosTomados;
       },
      profileId(){

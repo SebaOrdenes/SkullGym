@@ -1,15 +1,16 @@
 <template>
   <header>
     <nav class="container">
-      <div class="branding">
-        <router-link class="header" :to="{ name: 'Home' }">FireBlogs</router-link>
+      <div class="logo">
+        <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'> </router-link> Skull Gym<router-link class="link" :to="{ name: 'Home' }"> </router-link> 
       </div>
+         
       <div class="nav-links">
         <ul v-show="!mobile">
           <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
           <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Post</router-link>
-           <router-link v-if="admin" class="link" :to="{ name: 'CreateHorario' }">Crear Horario</router-link>
+          <router-link v-if="admin" class="link" :to="{ name: 'CreateHorario' }">Crear Horario</router-link>
           <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
           <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'Alumnos' }">Alumnos</router-link>
@@ -59,16 +60,20 @@
         </div>
       </div>
     </nav>
+
+
     <menuIcon @click="toggleMobileNav" class="menu-icon" v-show="mobile" />
     <transition name="mobile-nav">
       <ul class="mobile-nav" v-show="mobileNav">
+        <li>
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
         <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Post</router-link>
-         <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Horario</router-link>
-         <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
+        <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Horario</router-link>
+        <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
         <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
-      </ul>
+        </li> 
+     </ul>
     </transition>
   </header>
 </template>
@@ -141,21 +146,30 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  background-color: #fff;
+  background-color: #000000;
   padding: 0 25px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 10px #000;
   z-index: 99;
 
   .link {
-    font-weight: 500;
+    font-weight: 800;
+    color:#fff;
     padding: 0 8px;
-    transition: 0.3s color ease;
+    transition: 0.7s color ease;
 
     &:hover {
-      color: #1eb8b8;
+      color: #030303;
     }
   }
 
+  .logo{
+    flex: 1;
+    color:#fff;
+    font-family: Courier New;
+    margin-left: 50px;
+    text-transform: uppercase;
+    font-size: 30px;
+   }
   nav {
     display: flex;
     padding: 25px 0;
@@ -167,7 +181,7 @@ header {
       .header {
         font-weight: 600;
         font-size: 24px;
-        color: #000;
+        color: #fff;
         text-decoration: none;
       }
     }
@@ -195,14 +209,23 @@ header {
         position: relative;
         cursor: pointer;
         display: flex;
+        font-weight: 800;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
+        width: 80px;
+        height: 50px;
+        border-radius: 100%;
         color: #fff;
-        background-color: #303030;
+        background-color: #910602;
+        padding: 0 8px;
+        transition: 0.3s color ease;
 
+         
+        span {
+          pointer-events: none;
+        }
+ 
+       
         span {
           pointer-events: none;
         }
@@ -212,8 +235,8 @@ header {
           top: 60px;
           right: 0;
           width: 250px;
-          background-color: #303030;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          background-color: #000000;
+          box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.1), 0 2px 4px -1px rgba(255, 255, 255, 0.06);
 
           .info {
             display: flex;
@@ -223,10 +246,10 @@ header {
 
             .initials {
               position: initial;
-              width: 40px;
-              height: 40px;
+              width: 120px;
+              height: 30px;
               background-color: #fff;
-              color: #303030;
+              color: #000000;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -235,7 +258,7 @@ header {
 
             .right {
               flex: 1;
-              margin-left: 24px;
+              margin-left: 15px;
 
               p:nth-child(1) {
                 font-size: 14px;
@@ -243,7 +266,7 @@ header {
 
               p:nth-child(2),
               p:nth-child(3) {
-                font-size: 12px;
+                font-size: 13px;
               }
             }
           }
@@ -289,7 +312,7 @@ header {
     width: auto;
   }
 
-  .mobile-nav {
+  .mobile-nav {   
     padding: 20px;
     width: 70%;
     max-width: 250px;
@@ -297,7 +320,7 @@ header {
     flex-direction: column;
     position: fixed;
     height: 100%;
-    background-color: #303030;
+    background-color: #000000;
     top: 0;
     left: 0;
 

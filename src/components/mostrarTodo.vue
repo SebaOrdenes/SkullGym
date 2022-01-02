@@ -1,11 +1,15 @@
 <template>
   <div>
-     
-     <p v-show="!this.mostrar" class="font-weight-bold">Mostrar a Todos a las: {{this.horaMostr}} {{this.horaMostrar}} {{this.most}} {{this.$store.state.mostrar}}</p>
-     <p  v-show="mostrar"  class="font-weight-bold">Ingresa a que hora estará disponible para todos  {{this.most}} {{this.$store.state.mostrar}}</p>
-     <b-form-timepicker v-show="mostrar" v-model="hora"  size="sm" ></b-form-timepicker>
+     <br>
+     <br>
+     <p v-show="!this.mostrar" class="font-weight-bold">Mostrar a Todos en ---> {{this.horaMostrar}} {{this.$store.state.mostrar}} - {{this.$store.getters.MostrarHorario}}</p>
+    <!--    <p  v-show="mostrar"  class="font-weight-bold">Ingresa a que hora estará disponible para todos  {{this.most}} {{this.$store.state.mostrar}}</p>
+   <b-form-timepicker v-show="mostrar" v-model="hora"  size="sm" ></b-form-timepicker> -->
+     <h4 v-show="mostrar">Ingresa en cuantas horas estará disponible para todos</h4>
+     <input v-show="mostrar" v-model="hora" placeholder="Ingresar Horas">
+     <p v-show="mostrar"> Estará disponible para todos en: {{this.hora}} {{this.$store.state.mostrar}}</p>
      <button @click="HoraMostrar" v-if="mostrar"> Ingresar Hora a Mostrar </button>
-     <button @click="HoraMostrar" v-else> Editar Hora a Mostrar </button>
+     <button @click="SacarHoraMostrar" v-else> Editar Hora a Mostrar </button>
                         
    
   </div>
@@ -22,55 +26,52 @@ export default {
       most:null
     };
   },
-    beforeCreate() {
-      console.log("beforeCreate")
-    },
    async created(){
      try {
       await this.$store.dispatch("getMostrar");
      } catch (error) {
       console.error(error);
      }
-      console.log("mostrar created:",this.mostrar)
-      console.log("hora mostrar created",this.horaMostrar)
+      //console.log("mostrar created:",this.mostrar)
+      
+      let fecha1 = this.$store.getters.horaMostrar;
+      console.log("mostrar created:",fecha1)
       
     },
-   mounted() {
-       this.$nextTick(function () {
-       console.log("mounted")
-       
-    })
-   },
-
-    beforeUpdate() {
-      console.log("beforeUpdate")
-      this.most=this.mostrar
-      console.log("mostrar beforeUpdate",this.most)
-    },
+     
+     
     methods: {
     ...mapActions(['putMostrar']),
-    HoraMostrar() {
-     console.log("mostrar1:",this.mostrar)
+
+    SacarHoraMostrar() {
      this.putMostrar({mostrar: !this.mostrar, hora: this.hora});
-     //this.mostrar=!this.mostrar
-     console.log("mostrar2:",this.mostrar)
-     console.log(this.hora)
-     this.horaMostr=this.hora
-     this.most=!this.most
+     this.most=!this.most 
     },
+    HoraMostrar() {
+     
+     let hoy = new Date();
+     let mañana = 1000 * 60 * 60 * this.hora;
+     let diferencia = hoy.getTime() + mañana;
+     let fechaenhoras= new Date(diferencia);
+     this.putMostrar({mostrar: !this.mostrar, hora: fechaenhoras});
+     console.log("fecha con horas: ",fechaenhoras);
+     this.horaMostrar = this.fechaenhoras;
+     //console.log(this.hora)
+     this.most=!this.most
+     //console.log("mostrar2:",this.most)
+    },
+
   },
    computed: {
-    //mostrar2() {
-    //  console.log("mostrar state: computed")
-    //  return this.$store.state.mostrar;
-    //},
+  
     mostrar() {
-      console.log("mostrar getter: computed")
       return this.$store.getters.mostrar;
     },
      horaMostrar() {
-      console.log("hora getter: computed")
       return this.$store.getters.horaMostrar;
+    },
+    MostrarHorario() {
+      return this.$store.getters.MostrarHorario;
     },
     ...mapState(['mostrar']),
   }

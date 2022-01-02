@@ -47,8 +47,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+
 footer {
-  
+  background-image: url("https://image.freepik.com/free-photo/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall_1258-28313.jpg");
   margin-top: auto;
   padding: 100px 25px;
   background-color: #303030;
