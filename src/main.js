@@ -5,12 +5,14 @@ import store from "./store";
 import Vue2Editor from "vue2-editor";
 import firebase from "firebase/app";
 import "firebase/auth";
-
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
+
 // Import Bootstrap an BootstrapVue CSS files (order is important)
+//import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+//import 'bootstrap-vue/dist/bootstrap-vue.css'
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin

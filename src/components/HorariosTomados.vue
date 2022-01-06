@@ -1,9 +1,13 @@
 <template>
-     <div>
-     
+      
+   <div class="container p-3 my-1">
+        
+  
+        
+   <div class="left">
     <H3>Horarios Tomados</H3>
-    {{this.$store.getters.horariosTomados}}
-    <table class="table">
+   <!--  {{this.$store.getters.horariosTomados}}  -->
+    <table class="table .table-borderless">
         <thead>
             <tr>
                 <th scope="col">Fecha</th>
@@ -20,11 +24,13 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="DescartarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> Descartar </button>
+                        <button type="button" class="btn btn-dark" @click="DescartarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> Descartar </button>
                 </td>
             </tr>
         </tbody>
     </table>
+   </div>
+   
    </div>
 </template>
 
@@ -80,7 +86,7 @@ export default {
 
   .router-button {
     text-decoration: none;
-    color: #fff;
+    color: #ffffff;
   }
 
   label,
@@ -93,7 +99,7 @@ export default {
     border-radius: 20px;
     padding: 12px 24px;
     color: #fff;
-    background-color: #303030;
+    background-color: #ffffff;
     text-decoration: none;
 
     &:hover {
@@ -101,6 +107,10 @@ export default {
     }
   }
 
+   .img {
+    max-width: 10%;
+    max-height: 10%;
+    }
   .container {
     position: relative;
     height: 100%;

@@ -3,28 +3,17 @@
     <div class="container">
       <div class="left">
         <div class="col-1">
-         <ul>
-          <router-link class="header" :to="{ name: 'Home' }">Skull Gym  </router-link>
-         </ul>
-          <ul>
-               <router-link class="link" :to="{ name: 'Home' }">  <img src='../assets/skull_icon.png'></router-link>
-        </ul>
-            
           
-        </div>
-       
-        <div class="col-2">
           <ul>
-            <router-link class="link" :to="{ name: 'Home' }">Inicio</router-link>
-            <router-link class="link" :to="{ name: 'Blogs' }">Noticias</router-link>
-            <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
-            <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
-            <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Ingresar / Registrarse</router-link>
+            <h2>Medidas Covid</h2>
           </ul>
         </div>
+        
       </div>
-      <div class="right">                      
-        <p> © {{año}} Skull fitness Gym. All Rights Reserved</p>
+      <div class="right">
+         <ul> <img src='https://www.energy.cl/img/cms/COVID%20SECCION%20HOME/001.png'> Ingreso al Club por reconocimiento facial</ul>
+         <ul> <img src='https://www.energy.cl/img/cms/COVID%20SECCION%20HOME/002.png'>Aforo Limitado</ul>
+         <ul> <img src='https://www.energy.cl/img/cms/COVID%20SECCION%20HOME/003.png'>Limpieza, desinfección y ventilación.</ul>
       </div>
     </div>
   </footer>
@@ -34,9 +23,7 @@
 
 export default {
   name: "footer-vue",
-  components: {
   
-  },
   computed: {
     user() {
       return this.$store.state.user;
@@ -53,12 +40,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 footer {
-  background-image: url("https://image.freepik.com/free-photo/old-black-background-grunge-texture-dark-wallpaper-blackboard-chalkboard-room-wall_1258-28313.jpg");
+  background-image: url("../assets/horizontal5.jpg");
   margin-top: auto;
-  padding: 40px 10px;
+  padding: 60px 40px;
   background-color: #303030;
   .container {
     .link{

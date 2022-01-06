@@ -3,19 +3,19 @@
     <div class="app" v-if="this.$store.state.postLoaded">
       <Navigation2 v-if="!navigation" />
       <router-view />
-      <Footer v-if="!navigation" />
+      <Footer2 v-if="!navigation" />
     </div>
   </div>
 </template>
 
 <script>
 import Navigation2 from "./components/Navigation2";
-import Footer from "./components/Footer";
+import Footer2 from "./components/Footer2";
 import firebase from "firebase/app";
 import "firebase/auth";
 export default {
   name: "app",
-  components: { Navigation2, Footer },
+  components: { Navigation2, Footer2 },
   data() {
     return {
       navigation: null,
@@ -30,6 +30,7 @@ export default {
     });
     this.checkRoute();
     this.$store.dispatch("getPost");
+    
   },
   mounted() {},
   methods: {

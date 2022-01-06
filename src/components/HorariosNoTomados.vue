@@ -1,8 +1,8 @@
 <template>
-     <div>
+   <div class="container p-3 my-5">
     <H3>Horarios Disponibles </H3>
-    {{this.$store.getters.horariosNoTomados}}
-    <table class="table">
+   <!-- {{this.$store.getters.horariosNoTomados}} -->
+    <table class="table .table-borderless">
         <thead>
             <tr>
                 <th scope="col">Fecha</th>
@@ -19,12 +19,13 @@
                 <td>{{item.horas}}</td>
                 <td>{{item.espacio}} / {{item.cupos}}</td>
                 <td>
-                        <button @click="TomarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> Asistir </button>
+                        <button type="button" class="btn btn-dark" @click="TomarClase({id: item.HorarioID, userid: profileId, username: NombreCompleto, espacio: item.espacio})"> Asistir </button>
                 </td>
             </tr>
         </tbody>
     </table>
-    
+    <br>
+     <div><img src="../assets/imagenskull.jpg" class=" img-fluid mx-auto d-block" width="300" /></div>
    </div>
 </template>
 

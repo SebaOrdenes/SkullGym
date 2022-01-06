@@ -2,38 +2,30 @@
   <footer>
     <div class="container">
       <div class="left">
-        <div class="col-1">
-          <router-link class="header" :to="{ name: 'Home' }">FireBlogs</router-link>
-          <ul>
-            <li>
-              <a href="#"><instagram class="svg-icon"/></a>
-            </li>
-          </ul>
-        </div>
         <div class="col-2">
+          
           <ul>
-            <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-            <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+            <router-link class="link" :to="{ name: 'Home' }">Inicio</router-link>
+            <router-link class="link" :to="{ name: 'Blogs' }">Noticias</router-link>
             <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
             <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
-            <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login In / Register</router-link>
+            <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Ingresar / Registrarse</router-link>
           </ul>
         </div>
+        
       </div>
       <div class="right">
-        <p>Copyright 2021 All Rights Reserved</p>
+         <p> © {{año}} Skull fitness Gym. All Rights Reserved</p>
       </div>
     </div>
   </footer>
 </template>
 
 <script>
-import instagram from "../assets/Icons/instagram-brands.svg";
+
 export default {
   name: "footer-vue",
-  components: {
-    instagram,
-  },
+  
   computed: {
     user() {
       return this.$store.state.user;
@@ -41,16 +33,25 @@ export default {
     admin() {
       return this.$store.state.profileAdmin;
     },
+    año(){
+       let date =  new Date().getFullYear();
+       return date;
+     }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 footer {
+  background-image: url("../assets/5.jpg");
   margin-top: auto;
-  padding: 100px 25px;
+  padding: 115px 150px;
   background-color: #303030;
   .container {
+    .link{
+      font-family: 'Courier New', Courier, monospace;
+    }
+    
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -77,24 +78,27 @@ footer {
       }
 
       .header {
+        font-family: 'Courier New', Courier, monospace;
         text-align: center;
-        font-size: 24px;
+        font-size: 30px;
         color: #fff;
         margin-bottom: 16px;
         text-decoration: none;
-        font-weight: 600;
+        font-weight: 550;
         @media (min-width: 800px) {
           text-align: initial;
         }
       }
       ul {
-        gap: 16px;
+      
+        gap: 5px;
         list-style: none;
         display: flex;
       }
 
       .col-1,
       .col-2 {
+        font-family: 'Courier New', Courier, monospace;
         gap: 32px;
         display: flex;
         flex: 1;
@@ -107,6 +111,7 @@ footer {
         flex-direction: column;
 
         h2 {
+
           text-align: center;
           @media (min-width: 800px) {
             text-align: initial;
@@ -114,8 +119,10 @@ footer {
         }
         ul {
           margin-top: auto;
+      
 
           li {
+            
             display: flex;
             align-items: center;
             .svg-icon {
@@ -159,7 +166,9 @@ footer {
 
     p {
       margin-top: auto;
+      max-width: 40%;
     }
   }
 }
 </style>
+

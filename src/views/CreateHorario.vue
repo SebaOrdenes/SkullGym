@@ -1,8 +1,9 @@
 <template>
-  <div class="Title">
+  <div class="container">
 
-    <h1 class="Title">Horarios y Clases</h1>
+    <h1 style="padding: 30px 100px" class="Title">Horarios y Clases</h1>
      <mostrarTodo />
+     <br>
     <form @submit.prevent="procesarFormulario">
       <Horario :clase="clase" />
     </form>

@@ -1,14 +1,30 @@
-<template>
-  <div class="home">
-   
-      <CarrouselInicio/>
-      
-   <!-- <BlogPost v-if="!user" :post="welcomeScreen" /> -->
-     
-   <!--   <div >
-        <h2>Tu cambio comienza hoy, únete a skull fitness gym</h2>
-        <router-link class="router-button" :to="{ name: 'Register'}"> Registrate ahora <Arrow class="arrow arrow-light" /> </router-link>
-      </div> -->
+<template>     
+ <div>
+  <div v-if="user" class="container-fluid" style="background: #eee"> 
+    <div v-if="!user">
+    <CarrouselInicio/>
+      <br>
+     <Footer3/>
+    </div>
+    <BlogPost v-if="!user" :post="welcomeScreen" />
+    <BlogPost :post="post" v-for="(post, index) in blogPostsFeed" :key="index" />
+    <div class="blog-card-wrap">
+      <div class="container-fluid" style="background: #eee"> 
+        <h3>Noticias recientes</h3>
+        <div class="blog-cards">
+          <BlogCard :post="post" v-for="(post, index) in blogPostsCards" :key="index" />
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+   <div v-if="!user" class="home">  
+     <CarrouselInicio/>
+      <br>
+     <Footer3/>
+      <br>
+   </div>
   </div>
 </template>
 
@@ -17,23 +33,67 @@
 <script>
 
 import CarrouselInicio from "../components/CarrouselInicio.vue"
+import Footer3 from "../components/Footer3.vue"
+import BlogPost from "../components/BlogPost.vue";
+import BlogCard from "../components/BlogCard";
 
 export default {
   name: "Home",
-  components: {   CarrouselInicio },
+  components: {  Footer3, CarrouselInicio, BlogPost, BlogCard},
   data() {
     return {
-    
+       welcomeScreen: {
+        title: "Hola!",
+        blogPost:
+          "Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!",
+        welcomeScreen: true,
+        photo: "coding",
+      },
     };
   },
-
+  async created(){
+     try {
+       await this.$store.dispatch("getMostrar");
+      } catch (error) {
+       console.error(error);
+      }
+     try {
+      await this.$store.dispatch("getHorarioSemana");
+     } catch (error) {
+      console.error(error);
+     }
+      await this.$store.dispatch("getPrivilegios", this.profileId);
+      console.log("privilegios Home :", this.privilegios);
+  },
+  computed: {
+    profileId() {
+      return this.$store.state.profileId;
+    },
+   profileAdmin() {
+      return this.$store.state.profileAdmin;   
+       },
+    privilegios() {
+      return this.$store.state.privilegios;
+    },
+    blogPostsFeed() {
+      return this.$store.getters.blogPostsFeed;
+    },
+    blogPostsCards() {
+      return this.$store.getters.blogPostsCards;
+    },
+    user() {
+      return this.$store.state.user;
+    },
+  }
 };
 </script>
 
 <style lang="scss" scoped>
 
 
-
+.home{ 
+    background-color: #000000; 
+  }
 .blog-card-wrap {
   h3 {
     font-weight: 300;
@@ -44,7 +104,6 @@ export default {
 .updates {
   .container {
  
-
     padding: 100px 25px;
     display: flex;
     flex-direction: column;

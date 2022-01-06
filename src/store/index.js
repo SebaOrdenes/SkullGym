@@ -422,6 +422,7 @@ export default new Vuex.Store({
       const admin = await token.claims.admin;
       commit("setProfileAdmin", admin);
     },
+
     async putMedidas({commit}, med){
       const dataBase = await db.collection("users").doc(med.id);
       await dataBase.set({
@@ -430,16 +431,16 @@ export default new Vuex.Store({
       }, { merge: true });     
       commit("Medidas", med);
     },
+
     async getPrivilegios({commit}, id) {
      var privi;
-     var docRef = db.collection("users").doc(id);
-     //console.log("privilegios000000 :", id);
+     var docRef = db.collection("users").doc(id); 
      docRef.get().then((doc) => {
         privi = doc.data().privilegios;
-        //console.log("privilegiosss :", privi);
      commit('privilegio',privi)
       }) 
     },
+
     async getMedidaUser({commit},id){ 
      var primero;
      var segundo;

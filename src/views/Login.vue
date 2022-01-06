@@ -3,11 +3,13 @@
    
 
   <div class="form-wrap">
- 
-    <form class="login">
-        <p>   <img src='../assets/logo.png'></p>
     
-      <h2>Ingresar a Skull Fitness Gym</h2>
+    <form class="login">
+       <!-- <p>   <img src='../assets/logo.png'></p> -->
+     <div>
+      <h2>Ingresa a Skull Fitness Gym</h2>
+     </div>
+      
       <div class="inputs">
         <div class="input">
           <input type="text" placeholder="Email" v-model="email" />
@@ -186,7 +188,8 @@ vertical-align:middle;
     display: none;
     flex: 2;
     background-size: cover;
-    background-image: url("../assets/background1.jpg");
+    background-image: url("https://media.istockphoto.com/vectors/gym-fitness-skull-head-vector-illustration-art-vector-id1004276596?k=20&m=1004276596&s=612x612&w=0&h=LfbepKT3gofaO_o4Cg5b7c6rQIgPLKiWJofo3qtOvpQ=");
+
     width: 100%;
     height: 100%;
     @media (min-width: 900px) {

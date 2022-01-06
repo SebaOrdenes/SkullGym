@@ -2,16 +2,16 @@
   <header>
     <nav class="container">
       <div class="logo">
-        <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/skull_icon.png'> </router-link> Skull Gym<router-link class="link" :to="{ name: 'Home' }"> </router-link> 
+        <router-link class="link" :to="{ name: 'Home' }"> <img src='../assets/logo3.jpeg'> </router-link><router-link class="link" :to="{ name: 'Home' }"> </router-link> 
       </div>
          
       <div class="nav-links">
         <ul v-show="!mobile">
           <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
-          <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-          <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Post</router-link>
+          <router-link class="link" :to="{ name: 'Blogs' }">Noticias</router-link>
+          <router-link v-if="admin" class="link" :to="{ name: 'CreatePost' }">Crear Noticia</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'CreateHorario' }">Crear Horario</router-link>
-          <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Login/Register</router-link>
+          <router-link v-if="!user" class="link" :to="{ name: 'Login' }">Ingresar</router-link>
           <router-link v-if="user" class="link" :to="{ name: 'Horarios' }">Horarios</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'Alumnos' }">Alumnos</router-link>
           <router-link v-if="admin" class="link" :to="{ name: 'HistorialHorarios' }">Historial</router-link>
@@ -147,32 +147,39 @@ export default {
 <style lang="scss" scoped>
 header {
   background-color: #000000;
-  padding: 0 25px;
+  padding: 0 20px;
   box-shadow: 0 0 10px #000;
   z-index: 99;
 
   .link {
-    font-weight: 800;
+    font-weight: 1000;
     color:#fff;
-    padding: 0 8px;
+    padding: 0 12px;
     transition: 0.7s color ease;
 
     &:hover {
       color: #030303;
     }
   }
-
+  
+  
   .logo{
     flex: 1;
     color:#fff;
     font-family: Courier New;
-    margin-left: 50px;
+    margin-left: 20px;
     text-transform: uppercase;
-    font-size: 30px;
+    font-size: 20px;
+     height: 130px;
+     width: 200px;
+    img {
+    max-width: 90%;
+    max-height: 90%;
+    }
    }
   nav {
     display: flex;
-    padding: 25px 0;
+    padding: 10px 0;
 
     .branding {
       display: flex;
@@ -194,10 +201,10 @@ header {
       justify-content: flex-end;
 
       ul {
-        margin-right: 32px;
+        margin-right: 62px;
 
         .link {
-          margin-right: 32px;
+          margin-right: 62px;
         }
 
         .link:last-child {
@@ -214,10 +221,10 @@ header {
         justify-content: center;
         width: 80px;
         height: 50px;
-        border-radius: 100%;
+        border-radius: 120%;
         color: #fff;
-        background-color: #910602;
-        padding: 0 8px;
+        background-color: #f1072b;
+        padding: 0 18px;
         transition: 0.3s color ease;
 
          
@@ -246,8 +253,8 @@ header {
 
             .initials {
               position: initial;
-              width: 120px;
-              height: 30px;
+              width: 150px;
+              height: 40px;
               background-color: #fff;
               color: #000000;
               display: flex;
@@ -258,7 +265,7 @@ header {
 
             .right {
               flex: 1;
-              margin-left: 15px;
+              margin-left: 5px;
 
               p:nth-child(1) {
                 font-size: 14px;

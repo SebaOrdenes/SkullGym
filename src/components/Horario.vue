@@ -1,68 +1,39 @@
 <template>
   <div>
-    <div id="form">
-    <!--  <h5>Fecha</h5>
-       <form>
-          <input type="text" 
-          class="form-control my-2" 
-          placeholder="Ingresa fecha"
-          v-model.trim="clase.fecha"
-          >
-      </form>
-     <h5>Dias</h5>
-      <b-form-select
-        v-model="clase.dia"
-        :options="options"
-        size="sm"
-        class="mt-3"
-      ></b-form-select>
-      <br /><br />
-      <h5>Horas</h5> -->
-      <div class="row"> 
-      <p class="font-weight-bold">Fecha</p>
-      <b-form-datepicker v-model="clase.fecha" size="sm" ></b-form-datepicker>
-   
-      <p class="font-weight-bold">Hora</p>
-      <b-form-timepicker v-model="clase.horas"  size="sm" ></b-form-timepicker>
-      </div>
 
-      
-      <p class="font-weight-bold">Tipo</p>
-      <b-form-select
-        v-model="clase.tipo"
-        :options="optionsTipo"
-        size="sm"
-        class="mt-3"
-      ></b-form-select>
+    
+    <div class="container"> 
+      <h4>Fecha</h4>
+      <b-form-datepicker v-model="clase.fecha" size="sm" class="mb-3"></b-form-datepicker>
+
+       <br>
+      <h4>Hora</h4>
+      <b-col md="auto">
+      <b-time class="border rounded p-2 mb-3" v-model="clase.horas" locale="en" size="sm" ></b-time>
+       </b-col>
+      <br>
+
+      <h4>Tipo de clase</h4>
+      <b-form-group>
+      <b-form-select v-model="clase.tipo" :options="optionsTipo" size="sm" class="mb-3"></b-form-select>
+      </b-form-group>
   
-      <p class="font-weight-bold">Cupos</p>
-      <form>
-          <input type="text" 
-          class="form-control my-2" 
-          placeholder="Ingresa los cupos que estarán disponibles"
-          v-model.trim="clase.cupos"
-          >
-      </form>
-       <!--<div class="mt-3">
-        Selected: <strong>{{ dia }} /{{ Horario }}/{{ nombre }}</strong> 
-      </div>-->
-    </div>
-
-   <!-- <div class="md-form">
-      <input
-        placeholder="Selected time"
-        type="text"
-        id="input_starttime"
-        class="form-control timepicker"
-      />
-      <label for="input_starttime">Twelve hour clock</label>
-    </div> -->
-
-    <button type="submit" :disabled="bloquear">
+      <br>
+      <h4>Cupos</h4>
+      <b-input-group class="mb-3">
+       <b-input-group-prepend is-text>
+        <b-icon icon="person-fill"></b-icon>
+       </b-input-group-prepend>
+      <b-form-input type="text" placeholder="Ingresa los cupos que estarán disponibles"
+       v-model.trim="clase.cupos" ></b-form-input>
+      </b-input-group>
+    <br>
+  
+    <b-button variant="dark" type="submit" :disabled="bloquear">
       Procesar
-    </button>
+    </b-button>
 
-   
+   </div>
   </div>
 </template>
 

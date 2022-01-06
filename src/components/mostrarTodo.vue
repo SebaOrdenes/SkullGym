@@ -1,15 +1,19 @@
 <template>
-  <div>
-     <br>
-     <br>
-     <p v-show="!this.mostrar" class="font-weight-bold">Mostrar a Todos en ---> {{this.horaMostrar}} {{this.$store.state.mostrar}} - {{this.$store.getters.MostrarHorario}}</p>
-    <!--    <p  v-show="mostrar"  class="font-weight-bold">Ingresa a que hora estará disponible para todos  {{this.most}} {{this.$store.state.mostrar}}</p>
-   <b-form-timepicker v-show="mostrar" v-model="hora"  size="sm" ></b-form-timepicker> -->
-     <h4 v-show="mostrar">Ingresa en cuantas horas estará disponible para todos</h4>
-     <input v-show="mostrar" v-model="hora" placeholder="Ingresar Horas">
-     <p v-show="mostrar"> Estará disponible para todos en: {{this.hora}} {{this.$store.state.mostrar}}</p>
-     <button @click="HoraMostrar" v-if="mostrar"> Ingresar Hora a Mostrar </button>
-     <button @click="SacarHoraMostrar" v-else> Editar Hora a Mostrar </button>
+  <div class="container"> 
+    <div class="row">
+    <div class="col-md-auto">
+       <h5 v-show="mostrar">Ingresa en cuantas horas estará disponible para todos</h5>
+     <input v-show="mostrar" v-model="hora" placeholder="Ingresar horas">
+     <b-button variant="dark" @click="HoraMostrar" v-if="mostrar"> Ingresar Hora a Mostrar </b-button>
+     <b-button variant="dark" @click="SacarHoraMostrar" v-else> Editar Hora a Mostrar </b-button>
+    </div>
+    <div class="col-md-auto">
+      <h6 v-show="!this.mostrar" class="font-weight-bold">Mostrar a Todos : {{this.horaMostrar}} </h6>
+    </div>
+     </div>
+     
+    
+    
                         
    
   </div>

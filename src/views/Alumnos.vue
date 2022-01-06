@@ -1,9 +1,9 @@
 <template>
   <div class="blog-card-wrap">
-    <H1>Alumnos</H1>
-    {{usuarios}}
-    <div class="blog-cards container">
-     <table class="table">
+    <H1 style="padding: 10px 100px" >Alumnos</H1>
+    <br>
+    <div class=" container">
+     <table class="table table-dark table-hover">
         <thead>
             <tr>
                 <th scope="col">Nombre</th>
@@ -11,6 +11,7 @@
                 <th scope="col">Avances</th>
                 <th scope="col">Email</th>
                 <th scope="col">Privilegios</th>
+                <th scope="col">Eliminar</th>
             </tr>
         </thead> 
         <tbody>
@@ -18,7 +19,7 @@
                 <th>{{item.firstName}}</th>
                 <td>{{item.lastName}}</td>    
                 <td v-if="profileAdmin">
-                <router-link class=" ml-2 "
+                <router-link class=" ml-2 btn btn-primary"
                            :to="{
                             name: 'Avances',
                              params:{
@@ -29,17 +30,27 @@
                           Editar
                </router-link>
                </td>
-             <td>{{item.id}}</td> 
+             <td>{{item.email}}</td> 
              <td>
-                        <button @click="Privilegios({id: item.id})" v-if="!item.privilegios"> Privilegios </button>
-                        <button  @click="SacarPrivilegios({id: item.id})" v-else> Sacar Privilegios </button>
+                        <button class="btn btn-success" @click="Privilegios({id: item.id})" v-if="!item.privilegios"> Privilegios </button>
+                        <button class="btn btn-warning" @click="SacarPrivilegios({id: item.id})" v-else> Sacar Privilegios </button>
                         
                 </td> 
+              <td>
+                 <button class="btn btn-danger" @click="deleteHorario(item.id)"> Eliminar </button>
+              </td>
             </tr>
         </tbody>
     </table>
      
     </div>
+    
+      <div class="small">
+    <line-chart :chart-data="datacollection"></line-chart>
+    <button @click="fillData()">Randomize</button>
+  </div>
+
+
   </div>
 </template>
 
@@ -47,9 +58,20 @@
 <script>
 
 import {mapState, mapActions} from 'vuex'
+import LineChart from './LineChart.js'
 
 export default {
-   
+    components: {
+      LineChart
+    },
+    data () {
+      return {
+        datacollection: null
+      }
+    },
+    mounted () {
+      this.fillData()
+    },
     created(){
      this.getUser()
     // this.verPrivilegios()
@@ -63,9 +85,26 @@ export default {
      
     methods:{
       ...mapActions(['getUser','Privilegios','SacarPrivilegios']),
-     
+      fillData () {
+        this.datacollection = {
+          labels: [this.getRandomInt(), this.getRandomInt()],
+          datasets: [
+            {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }, {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: [this.getRandomInt(), this.getRandomInt()]
+            }
+          ]
+        }
+    },
+     getRandomInt () {
+        return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+      }
     }
-  
   
 }
 </script>
@@ -73,6 +112,7 @@ export default {
 
 <style lang="scss" scoped>
 .blog-cards {
+  
   position: relative;
   .toggle-edit {
     display: flex;
@@ -111,6 +151,7 @@ export default {
       background: #fff;
       left: 52px;
     }
+   
   }
 }
 </style>

@@ -1,15 +1,18 @@
 <template>
      <div>
      <H3>Horarios Semana</H3>
-    <table class="table">
+   <div class="container">
+     <table class="table table-light table-hover">
         <thead>
             <tr>
                 <th scope="col">Fecha</th>
                 <th scope="col">Clase</th>
                 <th scope="col">Horario</th>
                 <th scope="col">Cupos </th>
-                <th v-if="profileAdmin" scope="col">Alumnos </th>
-                <th scope="col">Tomar Clase</th>
+                <th scope="col">Eliminar</th>
+                <th scope="col">Editar </th>
+                <th scope="col">Enviar a Historial </th>
+               <!-- <th scope="col">Tomar Clase</th> -->
             </tr>
         </thead>
         <tbody>
@@ -17,20 +20,21 @@
                 <th scope="row">{{item.fecha}}</th>
                 <td>{{item.tipo}}</td>
                 <td>{{item.horas}}</td>
-                <td>{{item.espacio}} / {{item.cupos}}</td>
-                <td v-if="profileAdmin" >
+                <td>{{item.cupos}}</td>
+              <!--    <td>
                    <li v-for="element in item.alumnosNombre" :key="element.id">
                      {{element}}
                    </li>  
                 </td> 
-                <td>
-                        <button @click="TomarClase({id: item.id, userid: profileUser, username: NombreCompleto, espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </button> 
-                </td>
+              <td>
+                        <b-button variant="dark" @click="TomarClase({id: item.id, userid: profileUser, username: NombreCompleto, espacio: item.espacio, fecha: item.fecha, tipo: item.tipo, hora: item.horas})"> Asistir </b-button> 
+                </td> -->
                 <td v-if="profileAdmin">
-                        <button @click="deleteHorario(item.id)"> Eliminar </button>
+                        <b-button variant="dark" @click="deleteHorario(item.id)"> Eliminar </b-button>
                  </td>
                  <td v-if="profileAdmin">
-                       <router-link class="router-button ml-2 btn-warning"
+                     <b-button variant="warning">
+                       <router-link
                            :to="{
                             name: 'EditarClase',
                            params:{
@@ -40,20 +44,55 @@
                         >
                           Editar
                         </router-link>
+                      </b-button>
                 </td>
                 <td>
-                     <button @click="AddToHistorial(item)">A Historial</button>
+                     <b-button variant="dark" @click="AddToHistorial(item)">Historial</b-button>
                 </td>
             </tr>
         </tbody>
     </table>
+   
+    <br>
+       <br>
+
+    
+    <div class="container">
+     <div class="row">
+      <b-card-group v-for="item in horariosNoHistorial" :key="item.id" deck>
+
+      <b-card bg-variant="light">
+      <b-card bg-variant="light" class="text-center">{{item.fecha}} a las {{item.horas}} de tipo {{item.tipo}} hay {{item.espacio}} de {{item.cupos}} disponibles</b-card>
+        <b-card-text v-for="element in item.alumnosNombre" :key="element.id"> {{element}} </b-card-text>
+      </b-card>
+       <br>
+       <br>
+
+    </b-card-group>
+  </div>
+</div>
+
+
    </div>
+</div>
 </template>
 
 <script>
 import { mapState,mapActions} from 'vuex'
 export default {
-
+    
+     data() {
+      return {
+        
+        fields: ['Fecha', 'Clase', 'Horario','Cupos', 'Alumnos', 'Eliminar','Editar'],
+        items: [
+          { Fecha: 40, Clase: 'Dickerson', Horario: 'Macdonald' },
+          { Fecha: 21, Clase: 'Larsen', Horario: 'Shaw' },
+          { Fecha: 89, Clase: 'Geneva', Horario: 'Wilson' },
+          { Fecha: 38, Clase: 'Jami', Horario: 'Carney' }
+        ]
+      }
+    },
     async created(){
      try {
       await this.$store.dispatch("getHorarioSemana");
@@ -127,7 +166,7 @@ export default {
     cursor: pointer;
     border-radius: 20px;
     padding: 12px 24px;
-    color: #fff;
+    color: #ffffff;
     background-color: #303030;
     text-decoration: none;
 
@@ -136,11 +175,6 @@ export default {
     }
   }
 
-  .container {
-    position: relative;
-    height: 100%;
-    padding: 10px 25px 60px;
-  }
 
   // error styling
   .invisible {

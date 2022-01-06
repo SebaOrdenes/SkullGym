@@ -7,7 +7,7 @@
   <div class="slideshow-image" style="background-image: url('https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"></div>
    <div class="slideshow-image" style="background-image: url('https://c0.wallpaperflare.com/preview/190/596/906/active-adult-body-body-building.jpg')"></div>
   <div class="slideshow-image" style="background-image: url('https://images.pexels.com/photos/136404/pexels-photo-136404.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260')"></div>
-  <div class="slideshow-image" style="background-image: url('https://cdn.pixabay.com/photo/2018/06/27/22/45/fitness-3502830_960_720.jpg')"></div>
+  
 </div>
 </body>
 </template>

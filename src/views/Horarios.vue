@@ -1,6 +1,7 @@
 <template>
-  <div class="blog-card-wrap">
-   <h3> Horarios disponibles: </h3>
+  <div class="container-fluid" style="background: #eee"> 
+  <!--<div class="blog-card-wrap">
+   <h3> Horarios disponibles: </h3> -->
     <div v-show="mostrarConPrivilegios" class="blog-cards container">
       <HorariosNoTomados />
     </div>
@@ -8,7 +9,7 @@
       <HorariosTomados />
     
     </div>
-
+    <h3 v-show="nohayhorarios"> Todavia no hay horarios disponibles. </h3>
     <div v-show="mostrarTodos" class="blog-cards container">
       <HorariosNoTomados />
     </div>
@@ -36,6 +37,7 @@ export default {
       mostrar: true,
       privilegio : null,
       mostrarTodos: null,
+      nohayhorarios: false,
       mostrarConPrivilegios:null
     }
   },
@@ -55,6 +57,7 @@ export default {
            this.mostrarConPrivilegios=true;
       }else if(fecha1==false && this.mostrar==false){
           console.log("No muestra ya que no tiene privilegios ");
+          this.nohayhorarios=true;
           this.mostrarTodos=false;
       }else if(fecha1==true){
           console.log("Mostrar a Todos" );
